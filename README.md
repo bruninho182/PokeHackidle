@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="./img/banner.png" alt="PokeHackidle" width="35%">
+<img src="./icon.png" alt="PokeHackidle" width="35%">
 
 # 🎮 PokeHackidle
 
