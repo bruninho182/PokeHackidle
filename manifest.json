@@ -1,13 +1,27 @@
 {
   "manifest_version": 3,
   "name": "Poke AutoClick - Lançar",
-  "version": "1.0",
-  "description": "Dev Bruno Ferreira",
+  "version": "2.0",
+  "description": "AutoClick e notificação de Pokémon lendário com controles liga/desliga. Dev. Bruno Ferreira",
+  "permissions": ["notifications", "storage"],
+  "background": {
+    "service_worker": "background.js"
+  },
   "content_scripts": [
     {
       "matches": ["*://poke.idleworld.online/play*"],
       "js": ["content.js"],
       "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Poke AutoClick"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["lendario.mp3"],
+      "matches": ["*://poke.idleworld.online/*"]
     }
   ],
   "icons": {
