@@ -1,3 +1,4 @@
+// Notificações
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === 'legendary-caught') {
     chrome.notifications.create({
@@ -23,5 +24,33 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       message: 'Você capturou um Pokémon raro!',
       priority: 2
     });
+  }
+  
+  // Responde com estatísticas para o popup
+  if (message.type === 'getStats') {
+    chrome.storage.local.get(['contadores'], (data) => {
+      sendResponse(data.contadores || {
+        lendaria: 0,
+        epica: 0,
+        rara: 0,
+        total: 0
+      });
+    });
+    return true;
+  }
+  
+  // Reseta estatísticas
+  if (message.type === 'resetStats') {
+    chrome.storage.local.set({
+      contadores: {
+        lendaria: 0,
+        epica: 0,
+        rara: 0,
+        total: 0
+      }
+    }, () => {
+      sendResponse({ success: true });
+    });
+    return true;
   }
 });

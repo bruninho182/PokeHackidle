@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "🎮 PokeHackidle",
-  "version": "2.1",
-  "description": "AutoClick e notificação de Pokémon Lendário/Épico/Raro com controles independentes.",
+  "name": "Poke AutoClick - Lançar",
+  "version": "3.0",
+  "description": "AutoClick com velocidade ajustável e contador de capturas.",
   "permissions": ["notifications", "storage"],
   "background": {
     "service_worker": "background.js"
