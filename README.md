@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="./img/banner.png" alt="PokeHackidle" width="100%">
+<img src="./img/banner.png" alt="PokeHackidle" width="50%">
 
 # 🎮 Poke AutoClick – Lançar
 
