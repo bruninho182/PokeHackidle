@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="./IMG/banner.png" alt="PokeHackidle" width="100%">
+
 # 🎮 Poke AutoClick – Lançar
 
 ### 🖱️ Extensão para Chrome que automatiza o botão **Lançar** no Poke Idle World
