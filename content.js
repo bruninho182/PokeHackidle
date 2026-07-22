@@ -3,7 +3,6 @@ let autoClickInterval = null;
 let observer = null;
 const textosNotificados = new Set();
 let ignoreUntil = 0;
-let timerOcultarLog = null; // timer para ocultar o log após abrir manualmente
 
 // ---- AutoClick ----
 function startAutoClick() {
@@ -47,68 +46,30 @@ let config = {
   notifyRara: true
 };
 
-// ---- Funções para ocultar/mostrar painéis ----
-function ocultarPaineis() {
-  const huntPanel = document.querySelector('[class*="ha-panel"], [class*="analyzer-panel"], .dock-panel');
-  if (huntPanel) {
-    huntPanel.style.setProperty('position', 'fixed', 'important');
-    huntPanel.style.setProperty('left', '-9999px', 'important');
-    huntPanel.style.setProperty('top', '-9999px', 'important');
-    huntPanel.style.setProperty('width', '1px', 'important');
-    huntPanel.style.setProperty('height', '1px', 'important');
-    huntPanel.style.setProperty('overflow', 'hidden', 'important');
-    huntPanel.style.setProperty('opacity', '0', 'important');
-    huntPanel.style.setProperty('pointer-events', 'none', 'important');
-  }
-  
-  const clogPanel = document.querySelector('[class*="clog-panel"], [class*="clog-container"]');
-  if (clogPanel) {
-    clogPanel.style.setProperty('position', 'fixed', 'important');
-    clogPanel.style.setProperty('left', '-9999px', 'important');
-    clogPanel.style.setProperty('top', '-9999px', 'important');
-    clogPanel.style.setProperty('width', '1px', 'important');
-    clogPanel.style.setProperty('height', '1px', 'important');
-    clogPanel.style.setProperty('overflow', 'hidden', 'important');
-    clogPanel.style.setProperty('opacity', '0', 'important');
-    clogPanel.style.setProperty('pointer-events', 'none', 'important');
-  }
-}
-
-function mostrarPaineis() {
-  const huntPanel = document.querySelector('[class*="ha-panel"], [class*="analyzer-panel"], .dock-panel');
-  if (huntPanel) {
-    huntPanel.style.setProperty('position', '', '');
-    huntPanel.style.setProperty('left', '', '');
-    huntPanel.style.setProperty('top', '', '');
-    huntPanel.style.setProperty('width', '', '');
-    huntPanel.style.setProperty('height', '', '');
-    huntPanel.style.setProperty('overflow', '', '');
-    huntPanel.style.setProperty('opacity', '', '');
-    huntPanel.style.setProperty('pointer-events', '', '');
-  }
-  
-  const clogPanel = document.querySelector('[class*="clog-panel"], [class*="clog-container"]');
-  if (clogPanel) {
-    clogPanel.style.setProperty('position', '', '');
-    clogPanel.style.setProperty('left', '', '');
-    clogPanel.style.setProperty('top', '', '');
-    clogPanel.style.setProperty('width', '', '');
-    clogPanel.style.setProperty('height', '', '');
-    clogPanel.style.setProperty('overflow', '', '');
-    clogPanel.style.setProperty('opacity', '', '');
-    clogPanel.style.setProperty('pointer-events', '', '');
-  }
-}
-
 // ---- Processa span.clog-meta ----
 function processarSpan(span) {
+  console.log('[DEBUG] 🔍 processarSpan chamado');
+  console.log('[DEBUG] Conteúdo do span:', span.textContent.trim());
+  
   const b = span.querySelector('b');
-  if (!b) return;
+  if (!b) {
+    console.log('[DEBUG] ❌ Tag <b> não encontrada dentro do span');
+    return;
+  }
+  
   const raridade = b.textContent.trim();
   const textoCompleto = span.textContent.trim();
+  
+  console.log('[DEBUG] Raridade encontrada:', raridade);
+  console.log('[DEBUG] Texto completo:', textoCompleto);
 
-  if (textosNotificados.has(textoCompleto)) return;
+  if (textosNotificados.has(textoCompleto)) {
+    console.log('[DEBUG] ⚠️ Este texto já foi notificado antes');
+    return;
+  }
+  
   if (Date.now() < ignoreUntil) {
+    console.log('[DEBUG] 🔇 Modo silêncio ativo, apenas registrando');
     textosNotificados.add(textoCompleto);
     return;
   }
@@ -118,109 +79,124 @@ function processarSpan(span) {
     (raridade === 'Épica'    && config.notifyEpica)   ||
     (raridade === 'Rara'     && config.notifyRara);
 
+  console.log('[DEBUG] Deve notificar?', deveNotificar);
+  console.log('[DEBUG] Configs atuais:', config);
+
   if (deveNotificar) {
     textosNotificados.add(textoCompleto);
+    console.log('[DEBUG] ✅ Tocando som e enviando notificação...');
     tocarSom();
+    
     let tipoMsg = '';
     if (raridade === 'Lendária') tipoMsg = 'legendary-caught';
     else if (raridade === 'Épica') tipoMsg = 'epic-caught';
     else if (raridade === 'Rara') tipoMsg = 'rare-caught';
+    
     chrome.runtime.sendMessage({ type: tipoMsg });
-    console.log(`[Notificação] Pokémon ${raridade.toLowerCase()} detectado!`);
+    console.log('[NOTIFICAÇÃO] 🎉 Pokémon', raridade, 'detectado!');
+  } else {
+    console.log('[DEBUG] ❌ Notificação não enviada (desabilitada ou raridade não corresponde)');
   }
 }
 
 // ---- Observer ----
 function gerenciarObserver() {
   const precisaObservar = config.notifyLendaria || config.notifyEpica || config.notifyRara;
+  console.log('[DEBUG] gerenciarObserver - precisa:', precisaObservar, 'ativo:', !!observer);
+  
   if (precisaObservar && !observer) {
     observer = new MutationObserver((mutations) => {
+      console.log('[DEBUG] 👁️ Observer detectou', mutations.length, 'mutação(ões)');
+      
       for (const mutation of mutations) {
         for (const node of mutation.addedNodes) {
           if (node.nodeType === Node.ELEMENT_NODE) {
+            
+            // Verifica se é uma div.clog-row
             if (node.matches && node.matches('div.clog-row')) {
+              console.log('[DEBUG] 🟢 div.clog-row encontrada!');
+              console.log('[DEBUG] Conteúdo da row:', node.textContent.trim().substring(0, 100));
               const meta = node.querySelector('span.clog-meta');
-              if (meta) processarSpan(meta);
+              if (meta) {
+                console.log('[DEBUG] 🟢 span.clog-meta encontrado dentro da row');
+                processarSpan(meta);
+              } else {
+                console.log('[DEBUG] 🔴 span.clog-meta NÃO encontrado na row');
+              }
             }
+            
+            // Verifica se é um span.clog-meta
             if (node.matches && node.matches('span.clog-meta')) {
+              console.log('[DEBUG] 🟢 span.clog-meta encontrado!');
               processarSpan(node);
             }
+            
+            // Vasculha dentro do nó
             if (node.querySelectorAll) {
-              node.querySelectorAll('div.clog-row').forEach(row => {
-                const meta = row.querySelector('span.clog-meta');
-                if (meta) processarSpan(meta);
-              });
-              node.querySelectorAll('span.clog-meta').forEach(span => processarSpan(span));
+              const rows = node.querySelectorAll('div.clog-row');
+              const spans = node.querySelectorAll('span.clog-meta');
+              
+              if (rows.length > 0 || spans.length > 0) {
+                console.log('[DEBUG] 🔍 Dentro do nó:', rows.length, 'rows,', spans.length, 'spans');
+                
+                rows.forEach(row => {
+                  const meta = row.querySelector('span.clog-meta');
+                  if (meta) processarSpan(meta);
+                });
+                
+                spans.forEach(span => processarSpan(span));
+              }
             }
           }
         }
       }
     });
+    
     observer.observe(document.body, { childList: true, subtree: true });
-    console.log('[Observer] Ativo.');
+    console.log('[Observer] ✅ Ativo e monitorando');
   } else if (!precisaObservar && observer) {
     observer.disconnect();
     observer = null;
-    console.log('[Observer] Parado.');
+    console.log('[Observer] ❌ Parado');
   }
 }
 
-// ---- Abre Hunt Analyzer + Log e oculta tudo ----
-function abrirLogEOcultar() {
-  // Passo 1: Clica no botão Hunt Analyzer
+// ---- Força abertura do log ----
+function abrirLogAutomaticamente() {
+  console.log('[Setup] 🚀 Iniciando configuração automática...');
+  
+  // Passo 1: Abrir Hunt Analyzer
   const btnDock = document.querySelector('button.dock-btn[data-guide="dock-analyzer"]');
   if (!btnDock) {
-    setTimeout(abrirLogEOcultar, 2000);
+    console.log('[Setup] ⏳ Hunt Analyzer não encontrado, tentando em 2s...');
+    setTimeout(abrirLogAutomaticamente, 2000);
     return;
   }
   
+  console.log('[Setup] 🖱️ Clicando no Hunt Analyzer...');
   btnDock.click();
   
-  // Passo 2: Espera e clica no "Ver Log de Capturas"
+  // Passo 2: Esperar e abrir o log
   setTimeout(() => {
     const btnLog = document.querySelector('button.ha-clog-btn');
     if (!btnLog) {
-      setTimeout(abrirLogEOcultar, 2000);
+      console.log('[Setup] ⏳ Botão "Ver Log" não encontrado, tentando em 2s...');
+      setTimeout(abrirLogAutomaticamente, 2000);
       return;
     }
     
+    console.log('[Setup] 🖱️ Clicando em "Ver Log de Capturas"...');
     btnLog.click();
-    
-    // Passo 3: Espera carregar e oculta
-    setTimeout(() => {
-      ocultarPaineis();
-      console.log('[Log] ✅ Log configurado e oculto. Notificações ativas!');
-    }, 1500);
-    
-  }, 1500);
+    console.log('[Setup] ✅ Log aberto! Notificações prontas para funcionar.');
+  }, 2000);
 }
 
-// ---- Detecta cliques no botão do log ----
+// ---- Detecta clique manual no botão do log ----
 document.addEventListener('click', (e) => {
   const btn = e.target.closest('button.ha-clog-btn');
   if (btn) {
-    console.log('[Log] 🖱️ Clique detectado no botão "Ver Log"!');
-    
-    // Cancela o timer anterior se existir
-    if (timerOcultarLog) {
-      clearTimeout(timerOcultarLog);
-      timerOcultarLog = null;
-    }
-    
-    // Mostra os painéis imediatamente
-    mostrarPaineis();
-    
-    // Silencia notificações por 2s (para não disparar ao abrir)
+    console.log('[Log] 🖱️ Clique manual no botão do log - silenciando 2s');
     ignoreUntil = Date.now() + 2000;
-    
-    // Agenda para ocultar novamente após 10 segundos
-    timerOcultarLog = setTimeout(() => {
-      ocultarPaineis();
-      console.log('[Log] 🔒 Log ocultado automaticamente após 10s.');
-      timerOcultarLog = null;
-    }, 10000); // 10 segundos
-    
-    console.log('[Log] 👁️ Log visível por 10 segundos.');
   }
 });
 
@@ -230,7 +206,7 @@ function aplicarConfiguracao(data) {
   config.notifyLendaria = data.notifyLendariaEnabled !== false;
   config.notifyEpica = data.notifyEpicaEnabled !== false;
   config.notifyRara = data.notifyRaraEnabled !== false;
-  console.log('[Config]', JSON.stringify(config));
+  console.log('[Config]', config);
 
   if (config.autoClick) startAutoClick();
   else stopAutoClick();
@@ -255,12 +231,12 @@ if (document.readyState === 'loading') {
       ['autoClickEnabled', 'notifyLendariaEnabled', 'notifyEpicaEnabled', 'notifyRaraEnabled'],
       (data) => aplicarConfiguracao(data)
     );
-    setTimeout(abrirLogEOcultar, 2000);
+    setTimeout(abrirLogAutomaticamente, 2000);
   });
 } else {
   chrome.storage.local.get(
     ['autoClickEnabled', 'notifyLendariaEnabled', 'notifyEpicaEnabled', 'notifyRaraEnabled'],
     (data) => aplicarConfiguracao(data)
   );
-  setTimeout(abrirLogEOcultar, 2000);
+  setTimeout(abrirLogAutomaticamente, 2000);
 }
