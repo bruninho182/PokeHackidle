@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "Poke AutoClick - Lançar",
+  "version": "1.0",
+  "description": "Dev Bruno Ferreira",
+  "content_scripts": [
+    {
+      "matches": ["*://poke.idleworld.online/play*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "icons": {
+    "48": "icon.png",
+    "128": "icon.png"
+  }
+}
