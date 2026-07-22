@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Poke AutoClick - Lançar",
-  "version": "2.0",
-  "description": "AutoClick e notificação de Pokémon lendário com controles liga/desliga. Dev. Bruno Ferreira",
+  "name": "🎮 PokeHackidle",
+  "version": "2.1",
+  "description": "AutoClick e notificação de Pokémon Lendário/Épico/Raro com controles independentes.",
   "permissions": ["notifications", "storage"],
   "background": {
     "service_worker": "background.js"

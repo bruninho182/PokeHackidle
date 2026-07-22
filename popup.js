@@ -1,30 +1,42 @@
-// Elementos dos toggles
 const toggleAutoClick = document.getElementById('toggleAutoClick');
-const toggleNotify = document.getElementById('toggleNotify');
+const toggleNotifyLendaria = document.getElementById('toggleNotifyLendaria');
+const toggleNotifyEpica = document.getElementById('toggleNotifyEpica');
+const toggleNotifyRara = document.getElementById('toggleNotifyRara');
 const statusDiv = document.getElementById('status');
 
-// Carrega o estado salvo ao abrir o popup
 document.addEventListener('DOMContentLoaded', () => {
-  chrome.storage.local.get(['autoClickEnabled', 'notifyEnabled'], (data) => {
-    // Define os switches (padrão: true)
-    toggleAutoClick.checked = data.autoClickEnabled !== false;
-    toggleNotify.checked = data.notifyEnabled !== false;
-    statusDiv.textContent = 'Estado carregado.';
-  });
+  chrome.storage.local.get(
+    ['autoClickEnabled', 'notifyLendariaEnabled', 'notifyEpicaEnabled', 'notifyRaraEnabled'],
+    (data) => {
+      toggleAutoClick.checked = data.autoClickEnabled !== false;
+      toggleNotifyLendaria.checked = data.notifyLendariaEnabled !== false;
+      toggleNotifyEpica.checked = data.notifyEpicaEnabled !== false;
+      toggleNotifyRara.checked = data.notifyRaraEnabled !== false;
+      statusDiv.textContent = 'Estado carregado.';
+    }
+  );
 });
 
-// Ao mudar o toggle do AutoClick
 toggleAutoClick.addEventListener('change', () => {
-  const enabled = toggleAutoClick.checked;
-  chrome.storage.local.set({ autoClickEnabled: enabled }, () => {
-    statusDiv.textContent = `AutoClick ${enabled ? 'ativado' : 'desativado'}.`;
+  chrome.storage.local.set({ autoClickEnabled: toggleAutoClick.checked }, () => {
+    statusDiv.textContent = `AutoClick ${toggleAutoClick.checked ? 'ativado' : 'desativado'}.`;
   });
 });
 
-// Ao mudar o toggle da Notificação
-toggleNotify.addEventListener('change', () => {
-  const enabled = toggleNotify.checked;
-  chrome.storage.local.set({ notifyEnabled: enabled }, () => {
-    statusDiv.textContent = `Notificação ${enabled ? 'ativada' : 'desativada'}.`;
+toggleNotifyLendaria.addEventListener('change', () => {
+  chrome.storage.local.set({ notifyLendariaEnabled: toggleNotifyLendaria.checked }, () => {
+    statusDiv.textContent = `Notif. Lendária ${toggleNotifyLendaria.checked ? 'ativada' : 'desativada'}.`;
+  });
+});
+
+toggleNotifyEpica.addEventListener('change', () => {
+  chrome.storage.local.set({ notifyEpicaEnabled: toggleNotifyEpica.checked }, () => {
+    statusDiv.textContent = `Notif. Épica ${toggleNotifyEpica.checked ? 'ativada' : 'desativada'}.`;
+  });
+});
+
+toggleNotifyRara.addEventListener('change', () => {
+  chrome.storage.local.set({ notifyRaraEnabled: toggleNotifyRara.checked }, () => {
+    statusDiv.textContent = `Notif. Rara ${toggleNotifyRara.checked ? 'ativada' : 'desativada'}.`;
   });
 });
