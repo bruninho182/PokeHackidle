@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Poke AutoClick - Lançar",
-  "version": "3.0",
-  "description": "AutoClick com velocidade ajustável e contador de capturas.",
+  "name": "PokeHackidle",
+  "version": "2.0",
+  "description": "AutoClick, notificações, dashboard e alerta de IV alto para Poke Idle World",
   "permissions": ["notifications", "storage"],
   "background": {
     "service_worker": "background.js"
@@ -16,7 +16,7 @@
   ],
   "action": {
     "default_popup": "popup.html",
-    "default_title": "Poke AutoClick"
+    "default_title": "PokeHackidle"
   },
   "web_accessible_resources": [
     {

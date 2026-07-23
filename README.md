@@ -1,19 +1,32 @@
 <div align="center">
 
-<img src="./img/banner.png" alt="PokeHackidle" width="35%">
+<img src="./img/banner.png" alt="PokeHackIdle" width="40%">
 
-# 🎮 PokeHackidle
+# 🎮 PokeHackIdle
 
-### 🖱️ Extensão para Chrome que automatiza o botão **Lançar** no Poke Idle World
+### ⚡ A extensão definitiva para **Poke Idle World**
+
+Automatize capturas, receba notificações inteligentes, monitore Pokémon raros em tempo real e acompanhe estatísticas completas da sua caçada, tudo diretamente no navegador.
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Chrome-Extension-4285F4?style=for-the-badge&logo=googlechrome&logoColor=white">
-  <img src="https://img.shields.io/badge/Manifest-V3-green?style=for-the-badge">
-  <img src="https://img.shields.io/badge/JavaScript-ES6-yellow?style=for-the-badge&logo=javascript">
-  <img src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge">
+
+<img src="https://img.shields.io/badge/Chrome-Extension-4285F4?style=for-the-badge&logo=googlechrome&logoColor=white">
+
+<img src="https://img.shields.io/badge/Manifest-V3-34A853?style=for-the-badge">
+
+<img src="https://img.shields.io/badge/JavaScript-ES6-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
+
+<img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white">
+
+<img src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge">
+
 </p>
 
-Automatize o clique no botão **Lançar** do jogo **Poke Idle World** de forma simples, leve e eficiente.
+---
+
+### ⭐ Recursos Principais
+
+🖱️ AutoClick Inteligente • 🔔 Alertas por Raridade • 🔥 Detector de IV Alto • 📊 Dashboard • 📈 Estatísticas • 📜 Histórico • 🎨 Interface inspirada na Pokédex
 
 </div>
 
@@ -22,108 +35,311 @@ Automatize o clique no botão **Lançar** do jogo **Poke Idle World** de forma s
 # 📸 Demonstração
 
 <p align="center">
-<img src="./img/demo.gif" width="900">
+<img src="./img/demo.gif" width="100%">
 </p>
 
 ---
 
 # 📖 Índice
 
-- [✨ Sobre](#-sobre)
-- [🚀 Funcionalidades](#-funcionalidades)
-- [🛠 Tecnologias](#-tecnologias)
-- [📦 Instalação](#-instalação)
-- [🎮 Como usar](#-como-usar)
-- [⚙️ Personalização](#️-personalização)
-- [📁 Estrutura do Projeto](#-estrutura-do-projeto)
-- [⚠️ Aviso Legal](#️-aviso-legal)
-- [🤝 Contribuindo](#-contribuindo)
-- [📄 Licença](#-licença)
+- ✨ Sobre
+- 🚀 Funcionalidades
+- 📊 Dashboard
+- 📈 Estatísticas
+- 🎮 Como usar
+- 🛠 Tecnologias
+- 📦 Instalação
+- ⚙️ Configurações
+- 📁 Estrutura do Projeto
+- 💡 Como funciona
+- 🚀 Changelog
+- 📌 Roadmap
+- ⚠️ Aviso Legal
+- 🤝 Contribuindo
+- 📄 Licença
 
 ---
 
 # ✨ Sobre
 
-O **Poke AutoClick – Lançar** é uma extensão para navegadores baseados em Chromium que realiza automaticamente o clique no botão **Lançar** do jogo:
+O **PokeHackIdle** é uma extensão desenvolvida para navegadores baseados em **Chromium** que automatiza tarefas repetitivas do **Poke Idle World**, oferecendo uma experiência muito mais completa do que um simples AutoClick.
 
-> 🎮 https://poke.idleworld.online/play
-
-Foi desenvolvido como estudo sobre:
-
-- Desenvolvimento de extensões Chrome
-- Manipulação do DOM
-- JavaScript Vanilla
-- Manifest V3
-
-A extensão é extremamente leve e não utiliza nenhuma biblioteca externa.
+Além de automatizar o botão **Lançar**, a extensão monitora capturas em tempo real, identifica Pokémon raros, exibe notificações inteligentes, acompanha estatísticas, registra histórico das capturas e fornece um dashboard inspirado na clássica Pokédex.
 
 ---
+
+## 🎯 Objetivos do projeto
+
+- Automatizar tarefas repetitivas
+- Facilitar a identificação de Pokémon raros
+- Melhorar a experiência durante as hunts
+- Fornecer estatísticas em tempo real
+- Servir como estudo de desenvolvimento de extensões Chrome (Manifest V3)
+
+---
+
+## ✨ Destaques
+
+| Recurso | Disponível |
+|----------|------------|
+| 🖱️ AutoClick Inteligente | ✅ |
+| 🔔 Notificações por raridade | ✅ |
+| 🔥 Alerta de IV Alto | ✅ |
+| 📊 Dashboard completo | ✅ |
+| 📈 Estatísticas em tempo real | ✅ |
+| 📜 Histórico das capturas | ✅ |
+| 🎨 Interface Pokémon | ✅ |
+| 🔊 Sons personalizados | ✅ |
+| 💾 Configurações salvas automaticamente | ✅ |
+
+---
+
+> [!TIP]
+>
+> Todas as configurações da extensão são armazenadas automaticamente utilizando a **Chrome Storage API**, permitindo continuar exatamente de onde você parou.
 
 # 🚀 Funcionalidades
 
-✅ Clique automático no botão **Lançar**
-
-✅ Inicia automaticamente ao abrir o jogo
-
-✅ Intervalo totalmente configurável
-
-✅ Código simples e fácil de modificar
-
-✅ Compatível com:
-
-- Google Chrome
-- Microsoft Edge
-- Brave
-- Opera
-- Outros navegadores Chromium
+A extensão foi desenvolvida para funcionar como um verdadeiro **assistente inteligente** durante suas caçadas no **Poke Idle World**, automatizando ações repetitivas e monitorando eventos importantes em tempo real.
 
 ---
 
-# 🛠 Tecnologias
+# 🖱️ AutoClick Inteligente
 
-| Tecnologia | Descrição |
-|------------|-----------|
-| JavaScript ES6 | Lógica da extensão |
-| Manifest V3 | Novo padrão para extensões Chrome |
-| DOM API | Automação dos cliques |
+Automatize completamente o botão **Lançar** sem interferir na jogabilidade.
+
+### Recursos
+
+- ✅ Clique automático no botão **Lançar**
+- ⚡ Velocidade totalmente configurável
+- 🔘 Botão liga/desliga independente
+- 💾 Configuração salva automaticamente
+- 🎮 Não interfere nas demais ações do jogo
+- 🚀 Baixo consumo de recursos
+
+### Velocidades disponíveis
+
+| Intervalo | Resultado |
+|-----------|-----------|
+| 500 ms | Muito rápido |
+| 1000 ms | Rápido |
+| 2000 ms | Médio |
+| 3000 ms | Lento |
+| 5000 ms | Muito lento |
 
 ---
+
+# 🔔 Notificações Inteligentes
+
+Nunca mais deixe passar um Pokémon raro.
+
+Sempre que um Pokémon especial for encontrado, a extensão poderá exibir notificações na tela e reproduzir sons personalizados.
+
+## Raridades suportadas
+
+| Raridade | Notificação | Som | Configurável |
+|----------|------------|-----|--------------|
+| 🌟 Lendário | ✅ | ✅ | ✅ |
+| 💎 Épico | ✅ | ✅ | ✅ |
+| ⭐ Raro | ✅ | ✅ | ✅ |
+
+### Recursos
+
+- 🔔 Notificações individuais
+- 🎵 Sons personalizados
+- ⚙️ Liga/desliga para cada raridade
+- 💾 Preferências salvas automaticamente
+
+---
+
+# 🔥 Detector de IV Alto
+
+Receba alertas sempre que um Pokémon atingir um IV acima do valor definido.
+
+## Recursos
+
+- ✅ IV mínimo configurável
+- ✅ Valor entre **100** e **192**
+- ✅ Configuração salva automaticamente
+- ✅ Som exclusivo para IV alto
+- ✅ Anti-spam inteligente
+- ✅ Histórico permanente
+
+### Filtro por raridade
+
+Você pode limitar o alerta apenas para:
+
+- 🌟 Lendários
+- 💎 Épicos
+- ⭐ Raros
+
+Ou monitorar todas as categorias ao mesmo tempo.
+
+---
+
+# 🚫 Sistema Anti-Spam
+
+A extensão identifica automaticamente quando um Pokémon já foi notificado anteriormente.
+
+Isso evita:
+
+- Notificações repetidas
+- Sons duplicados
+- Alertas desnecessários
+
+Mesmo atualizando a página, o histórico permanece salvo.
+
+---
+
+# 📊 Dashboard Inteligente
+
+Acompanhe todas as informações da sua última captura diretamente pelo popup.
+
+### Informações exibidas
+
+- 🐉 Nome do Pokémon
+- ⭐ Raridade
+- 🎯 Level
+- 💎 IV (Individual Values)
+- 🔴 Pokébola utilizada
+- 🕒 Horário da captura
+- 🖼️ Imagem oficial via PokéAPI
+
+Tudo é atualizado automaticamente durante a jogatina.
+
+---
+
+# 📈 Estatísticas em Tempo Real
+
+Veja seu desempenho enquanto joga.
+
+O dashboard mantém contadores separados para cada categoria.
+
+| Estatística |
+|-------------|
+| 🌟 Lendários |
+| 💎 Épicos |
+| ⭐ Raros |
+| 📦 Total de capturas especiais |
+
+Também é possível:
+
+- 🔄 Resetar todos os contadores
+- Atualização instantânea
+- Dados armazenados permanentemente
+
+---
+
+# 📜 Histórico das Capturas
+
+Visualize rapidamente suas últimas capturas especiais.
+
+Cada registro apresenta:
+
+- Nome
+- Raridade
+- IV
+- Horário
+
+### Características
+
+- Exibe as **4 últimas capturas**
+- Atualização automática
+- Organização cronológica
+- Persistência utilizando Chrome Storage
+
+---
+
+# 🎨 Interface Inspirada na Pokédex
+
+Toda a interface foi redesenhada utilizando elementos clássicos do universo Pokémon.
+
+### Destaques
+
+- ❤️ Tema vermelho estilo Pokédex
+- ✨ Detalhes dourados
+- 🎮 Fonte retrô **Press Start 2P**
+- 🌀 GIFs animados
+- 📱 Layout responsivo
+- 🧩 Popup compacto (320px)
+
+---
+
+# 🪟 Log Inteligente
+
+O painel de capturas foi otimizado para não atrapalhar a jogabilidade.
+
+### Melhorias implementadas
+
+- 📐 Tamanho fixo (360 × 220 px)
+- 📍 Posicionado acima do chat
+- 🔄 Scroll interno
+- ❌ Fecha automaticamente o Hunt Analyzer
+- 🎮 Não cobre elementos importantes do jogo
+
+---
+
+# 💾 Persistência de Dados
+
+Todas as configurações são armazenadas automaticamente utilizando a **Chrome Storage API**.
+
+Entre elas:
+
+- AutoClick
+- Velocidade
+- Notificações
+- IV mínimo
+- Histórico
+- Estatísticas
+- Contadores
+
+Mesmo fechando o navegador, todas as informações permanecem salvas.
+
+---
+
+> [!NOTE]
+>
+> A extensão foi desenvolvida para consumir o mínimo possível de recursos do navegador, executando apenas os processos necessários em tempo real.
 
 # 📦 Instalação
 
-### 1️⃣ Clone o repositório
-
-```bash
-git clone https://github.com/SEU_USUARIO/poke-autoclick-lancar.git
-```
-
-Ou faça o download do ZIP.
+A instalação é simples e leva menos de 2 minutos.
 
 ---
 
-### 2️⃣ Abra o Chrome
+## 1️⃣ Clone o repositório
 
-Acesse:
-
+```bash
+git clone https://github.com/SEU_USUARIO/PokeHackIdle.git
 ```
+
+Ou faça o download do projeto em formato **ZIP** diretamente pelo GitHub.
+
+---
+
+## 2️⃣ Abra a página de extensões
+
+No navegador baseado em Chromium, acesse:
+
+```text
 chrome://extensions
 ```
 
 ---
 
-### 3️⃣ Ative o modo desenvolvedor
+## 3️⃣ Ative o Modo do Desenvolvedor
 
-No canto superior direito habilite:
+No canto superior direito, habilite:
 
 > **Modo do Desenvolvedor**
 
 ---
 
-### 4️⃣ Carregue a extensão
+## 4️⃣ Carregue a extensão
 
 Clique em:
 
-```
+```text
 Carregar sem compactação
 ```
 
@@ -131,142 +347,545 @@ Selecione a pasta do projeto.
 
 Pronto! 🎉
 
+A extensão já estará instalada e pronta para uso.
+
 ---
 
-# 🎮 Como usar
+> [!TIP]
+>
+> Sempre que modificar algum arquivo da extensão, clique em **Atualizar** na página `chrome://extensions` para recarregar as alterações.
 
-1. Abra o jogo
+---
+
+# 🎮 Como Usar
+
+Após instalar a extensão:
+
+### 1️⃣ Abra o jogo
 
 https://poke.idleworld.online/play
 
-2. Aguarde a página carregar
+---
 
-3. O AutoClick começará automaticamente.
+### 2️⃣ Clique no ícone da extensão
+
+O popup será aberto com todas as configurações disponíveis.
 
 ---
 
-## Console (Opcional)
+### 3️⃣ Configure a extensão
 
-Caso queira visualizar a execução:
+Você poderá personalizar:
 
-Pressione
+- 🖱️ AutoClick
+- ⚡ Velocidade dos cliques
+- 🔔 Notificações
+- 🌟 Alertas por raridade
+- 🔥 Valor mínimo de IV
+- 📊 Dashboard
+- 📈 Estatísticas
 
-```
-F12
-```
+Todas as alterações são salvas automaticamente.
 
-Depois abra a aba
+---
 
-```
-Console
-```
+### 4️⃣ Jogue normalmente
 
-Será exibida a mensagem:
+A extensão ficará monitorando a página em tempo real.
+
+Sempre que encontrar um Pokémon raro ou um IV acima do configurado, você será notificado automaticamente.
+
+---
+
+# ⚙️ Configurações
+
+O popup foi desenvolvido para permitir total personalização.
+
+## 🖱️ AutoClick
+
+| Configuração | Descrição |
+|--------------|-----------|
+| Ativar | Liga ou desliga o AutoClick |
+| Intervalo | Define a velocidade entre 500 ms e 5000 ms |
+
+---
+
+## 🔔 Notificações
+
+Cada raridade pode ser controlada individualmente.
+
+| Categoria | Configurável |
+|-----------|--------------|
+| 🌟 Lendário | ✅ |
+| 💎 Épico | ✅ |
+| ⭐ Raro | ✅ |
+
+---
+
+## 🔥 Detector de IV
+
+Configure facilmente o valor mínimo para receber alertas.
+
+Faixa disponível:
 
 ```text
-[AutoClick] Botão Lançar clicado.
+100 → 192
 ```
+
+Também é possível limitar os alertas apenas para determinadas raridades.
 
 ---
 
-# ⚙️ Personalização
+## 📊 Dashboard
 
-O intervalo entre os cliques pode ser alterado facilmente no arquivo:
+O painel principal exibe automaticamente:
 
-```
-content.js
-```
+- Pokémon capturado
+- Sprite oficial
+- Level
+- IV
+- Pokébola utilizada
+- Horário
+- Raridade
 
-Exemplo:
+---
 
-```javascript
-setInterval(() => {
+## 📈 Estatísticas
 
-   // Código
+O popup acompanha em tempo real:
 
-}, 1000);
-```
+- 🌟 Lendários
+- 💎 Épicos
+- ⭐ Raros
+- 📦 Total de capturas
 
-### Valores comuns
+Além disso, existe um botão para zerar todos os contadores.
 
-| Tempo | Resultado |
-|--------|-----------|
-| 500 ms | 2 cliques/segundo |
-| 1000 ms | 1 clique/segundo |
-| 2000 ms | 1 clique a cada 2 segundos |
-| 5000 ms | 1 clique a cada 5 segundos |
+---
 
-Após alterar o valor:
+## 📜 Histórico
 
-- Recarregue a extensão
-- Atualize a página do jogo
+As últimas capturas ficam registradas automaticamente.
+
+Cada item apresenta:
+
+- Nome
+- IV
+- Horário
+- Raridade
+
+---
+
+# 🛠️ Tecnologias
+
+O projeto foi desenvolvido utilizando apenas tecnologias nativas do navegador, sem frameworks externos.
+
+| Tecnologia | Utilização |
+|------------|------------|
+| JavaScript ES6 | Lógica da extensão |
+| Manifest V3 | Arquitetura da extensão |
+| HTML5 | Interface |
+| CSS3 | Estilização |
+| Chrome Storage API | Persistência dos dados |
+| Chrome Notifications API | Alertas |
+| MutationObserver | Monitoramento em tempo real |
+| PokéAPI | Imagens oficiais dos Pokémon |
+
+---
+
+# 🌐 APIs Utilizadas
+
+## PokéAPI
+
+A extensão consulta automaticamente a **PokéAPI** para obter as imagens oficiais dos Pokémon exibidas no Dashboard.
+
+Informações utilizadas:
+
+- Nome
+- Sprite oficial
+
+Documentação:
+
+https://pokeapi.co/
 
 ---
 
 # 📁 Estrutura do Projeto
 
-```
-poke-autoclick-lancar/
+```text
+PokeHackIdle/
 │
-├── manifest.json
-├── content.js
-├── demo.gif
-├── LICENSE
+├── manifest.json            # Configuração da extensão
+├── background.js            # Service Worker
+├── content.js               # Script principal
+├── popup.html               # Interface
+├── popup.css                # Estilos
+├── popup.js                 # Lógica do popup
+├── icon.png                 # Ícone
+├── lendario.mp3             # Som de alerta
+│
+├── img/
+│   ├── banner.png
+│   ├── demo.gif
+│   │
+│   └── assets/
+│       ├── pokebola.gif
+│       ├── lendario.gif
+│       ├── epico.gif
+│       ├── raro.gif
+│       ├── pikachu.gif
+│       └── treinador.gif
+│
 └── README.md
 ```
 
 ---
 
-# 💡 Como funciona
+# 💡 Como Funciona
 
-A extensão monitora continuamente a página do jogo.
+A extensão utiliza um conjunto de recursos do navegador para monitorar continuamente o jogo.
 
-Sempre que encontra o botão:
+## Fluxo de funcionamento
 
-```html
-<button class="cap-throw">
-    Lançar
-</button>
+```text
+Jogo
+   │
+   ▼
+MutationObserver
+   │
+   ▼
+Detecta Captura
+   │
+   ▼
+Analisa Raridade
+   │
+   ├────────► Atualiza Dashboard
+   │
+   ├────────► Atualiza Estatísticas
+   │
+   ├────────► Atualiza Histórico
+   │
+   └────────► Exibe Notificação
 ```
 
-Ela executa automaticamente:
+Todo o processamento acontece localmente no navegador.
 
-```javascript
-button.click();
-```
-
-Tudo acontece em segundo plano.
+Nenhuma informação da sua conta é enviada para servidores externos.
 
 ---
 
-# ⚠️ Aviso Legal
+> [!IMPORTANT]
+>
+> O projeto é totalmente client-side. Todos os dados são processados e armazenados localmente utilizando a Chrome Storage API, garantindo rapidez e privacidade.
 
-> **Este projeto possui finalidade exclusivamente educacional.**
+# 📸 Galeria
 
-Automatizar ações em jogos online pode violar os Termos de Serviço da plataforma.
+Confira algumas imagens da extensão em funcionamento.
 
-O autor não se responsabiliza por:
+> [!NOTE]
+> Substitua as imagens abaixo pelos screenshots reais do seu projeto.
 
-- Suspensão de contas
-- Banimentos
-- Uso indevido da ferramenta
+---
 
-Utilize por sua conta e risco.
+## 🏠 Dashboard
+
+<p align="center">
+<img src="./img/screenshots/dashboard.png" width="90%">
+</p>
+
+---
+
+## 🔔 Sistema de Notificações
+
+<p align="center">
+<img src="./img/screenshots/notificacoes.png" width="90%">
+</p>
+
+---
+
+## 📊 Estatísticas
+
+<p align="center">
+<img src="./img/screenshots/estatisticas.png" width="90%">
+</p>
+
+---
+
+## 📜 Histórico
+
+<p align="center">
+<img src="./img/screenshots/historico.png" width="90%">
+</p>
+
+---
+
+# 🚀 Changelog
+
+## 🎉 Versão 2.0
+
+Uma atualização completa da extensão.
+
+### ✨ Novidades
+
+- 🔥 Sistema de alerta de IV Alto
+- 🎯 Valor mínimo configurável (100–192)
+- 🚫 Sistema Anti-Spam inteligente
+- 📊 Dashboard totalmente reformulado
+- 🖼️ Imagens oficiais via PokéAPI
+- 📈 Contadores individuais
+- 📜 Histórico das últimas capturas
+- 🎨 Novo visual inspirado na Pokédex
+- 🪟 Log redimensionado
+- 📍 Posicionamento inteligente acima do chat
+- 🔄 Fechamento automático do Hunt Analyzer
+- 💾 Melhor gerenciamento de armazenamento
+- ⚡ Melhor desempenho geral
+
+---
+
+## 🚀 Versão 1.0
+
+Primeira versão pública.
+
+### Recursos
+
+- 🖱️ AutoClick
+- ⚙️ Controle de velocidade
+- 🔔 Notificações por raridade
+- 📈 Contadores de captura
+- 🔊 Sons personalizados
+
+---
+
+# 🗺️ Roadmap
+
+Funcionalidades planejadas para futuras versões.
+
+| Status | Funcionalidade |
+|---------|----------------|
+| ✅ | AutoClick Inteligente |
+| ✅ | Dashboard |
+| ✅ | Histórico |
+| ✅ | Estatísticas |
+| ✅ | Detector de IV |
+| ✅ | PokéAPI |
+| 🔄 | Temas personalizados |
+| 🔄 | Exportação de estatísticas |
+| 🔄 | Sistema de conquistas |
+| 🔄 | Backup das configurações |
+| 🔄 | Idioma Inglês |
+| 🔄 | Suporte ao Firefox |
+| 💡 | Dashboard avançado |
+| 💡 | Gráficos de capturas |
+| 💡 | Estatísticas por dia |
+| 💡 | Sincronização entre dispositivos |
+
+Legenda:
+
+- ✅ Concluído
+- 🔄 Em desenvolvimento
+- 💡 Planejado
+
+---
+
+# ❓ FAQ
+
+## A extensão funciona automaticamente?
+
+Sim.
+
+Depois de instalada, basta abrir o jogo e configurar as opções desejadas.
+
+---
+
+## Consome muita memória?
+
+Não.
+
+Ela foi desenvolvida para consumir poucos recursos e monitorar apenas os elementos necessários.
+
+---
+
+## Posso alterar a velocidade do AutoClick?
+
+Sim.
+
+É possível configurar qualquer intervalo entre **500 ms** e **5000 ms**.
+
+---
+
+## As configurações ficam salvas?
+
+Sim.
+
+Tudo é armazenado automaticamente utilizando a **Chrome Storage API**.
+
+---
+
+## Preciso manter o popup aberto?
+
+Não.
+
+Mesmo fechado, a extensão continua funcionando normalmente.
+
+---
+
+## Os dados são enviados para algum servidor?
+
+Não.
+
+Todo o processamento acontece localmente no navegador.
+
+---
+
+# ⚡ Desempenho
+
+O projeto foi otimizado para causar o menor impacto possível durante a execução.
+
+### Otimizações implementadas
+
+- ✅ MutationObserver ao invés de loops constantes
+- ✅ Chrome Storage para persistência
+- ✅ Atualizações somente quando necessário
+- ✅ Baixo uso de memória
+- ✅ Pouco consumo de CPU
+- ✅ Carregamento rápido
+
+---
+
+# 🔒 Segurança e Privacidade
+
+A extensão não coleta informações pessoais.
+
+Ela:
+
+- ✅ Não envia dados para servidores externos
+- ✅ Não coleta informações da conta
+- ✅ Não registra senhas
+- ✅ Não monitora outros sites
+- ✅ Funciona apenas na página do jogo
+
+Todas as informações permanecem armazenadas localmente no navegador.
+
+---
+
+# 🌐 Compatibilidade
+
+| Navegador | Compatível |
+|------------|-----------|
+| ✅ Google Chrome | Sim |
+| ✅ Microsoft Edge | Sim |
+| ✅ Brave | Sim |
+| ✅ Opera | Sim |
+| ✅ Vivaldi | Sim |
+| ⚠️ Firefox | Planejado |
+
+---
+
+# 📊 Recursos da Extensão
+
+| Categoria | Disponível |
+|-----------|------------|
+| 🖱️ AutoClick | ✅ |
+| 🔔 Alertas | ✅ |
+| 🔥 Detector de IV | ✅ |
+| 📊 Dashboard | ✅ |
+| 📈 Estatísticas | ✅ |
+| 📜 Histórico | ✅ |
+| 💾 Persistência | ✅ |
+| 🎨 Interface Pokémon | ✅ |
+| 🔊 Sons | ✅ |
+| 🖼️ PokéAPI | ✅ |
+| 🚫 Anti-Spam | ✅ |
+
+---
+
+> [!TIP]
+>
+> Utilize intervalos entre **800 ms** e **1500 ms** para uma experiência mais equilibrada durante o uso do AutoClick.
 
 ---
 
 # 🤝 Contribuindo
 
-Contribuições são muito bem-vindas!
+Contribuições são sempre bem-vindas!
 
-Caso tenha sugestões de melhorias:
+Se você encontrou um bug, tem uma ideia de melhoria ou deseja colaborar com o desenvolvimento, fique à vontade para participar.
 
-- ⭐ Faça um Fork
-- 🌱 Crie uma Branch
-- 💻 Faça suas alterações
-- 🚀 Abra um Pull Request
+## Como contribuir
 
-Também é possível abrir uma **Issue** para reportar bugs ou sugerir novas funcionalidades.
+1. 🍴 Faça um **Fork** deste repositório
+2. 🌿 Crie uma nova branch
+
+```bash
+git checkout -b minha-feature
+```
+
+3. 💻 Faça suas alterações
+4. ✅ Realize os testes
+5. 📦 Faça o commit
+
+```bash
+git commit -m "feat: adiciona nova funcionalidade"
+```
+
+6. 🚀 Envie para o GitHub
+
+```bash
+git push origin minha-feature
+```
+
+7. 📬 Abra um Pull Request
+
+---
+
+# 🐞 Reportando Bugs
+
+Encontrou algum problema?
+
+Antes de abrir uma Issue, verifique se ele já não foi reportado anteriormente.
+
+Ao criar uma Issue, tente informar:
+
+- Navegador utilizado
+- Versão da extensão
+- Passos para reproduzir
+- Capturas de tela (se possível)
+- Mensagens de erro do Console (F12)
+
+Isso ajuda bastante na resolução do problema.
+
+---
+
+# 💡 Sugestões
+
+Tem alguma ideia para melhorar a extensão?
+
+Você pode sugerir funcionalidades como:
+
+- 🎨 Novos temas
+- 📈 Novas estatísticas
+- 🔔 Novos alertas
+- 🎵 Novos sons
+- ⚙️ Novas configurações
+- 📊 Dashboard avançado
+- 🌎 Suporte a outros idiomas
+
+Toda sugestão é bem-vinda!
+
+---
+
+# ❤️ Agradecimentos
+
+Este projeto utiliza diversas tecnologias da comunidade open source.
+
+Agradecimentos especiais a:
+
+- Google Chrome Extensions
+- Manifest V3
+- PokéAPI
+- JavaScript Community
+- Todos os usuários que testaram a extensão
 
 ---
 
@@ -274,16 +893,73 @@ Também é possível abrir uma **Issue** para reportar bugs ou sugerir novas fun
 
 Este projeto está licenciado sob a licença **MIT**.
 
+Você pode utilizá-lo, estudar, modificar e distribuir livremente, respeitando os termos da licença.
+
 Consulte o arquivo **LICENSE** para mais informações.
+
+---
+
+# ⚠️ Aviso Legal
+
+> [!WARNING]
+>
+> Este projeto possui finalidade exclusivamente educacional.
+
+A extensão foi criada para fins de estudo sobre:
+
+- Desenvolvimento de extensões para Chrome
+- Manipulação do DOM
+- JavaScript
+- APIs do navegador
+- Manifest V3
+
+O uso de ferramentas de automação pode violar os Termos de Serviço do jogo.
+
+O autor não se responsabiliza por:
+
+- Suspensão de contas
+- Banimentos
+- Perda de progresso
+- Qualquer consequência decorrente do uso da extensão
+
+Utilize por sua conta e risco.
+
+---
+
+# ⭐ Apoie o Projeto
+
+Se este projeto foi útil para você, considere apoiar seu desenvolvimento.
+
+Você pode ajudar de várias formas:
+
+- ⭐ Dando uma estrela no repositório
+- 🐞 Reportando bugs
+- 💡 Enviando sugestões
+- 🤝 Abrindo Pull Requests
+- 📢 Compartilhando o projeto com outros jogadores
+
+Cada contribuição ajuda o projeto a evoluir. ❤️
 
 ---
 
 <div align="center">
 
-## ⭐ Gostou do projeto?
+# 🎮 PokeHackIdle
 
-Deixe uma ⭐ no repositório para apoiar o desenvolvimento!
+### A extensão definitiva para **Poke Idle World**
 
-Desenvolvido com ❤️ utilizando **JavaScript**.
+🖱️ AutoClick Inteligente • 🔔 Alertas em Tempo Real • 🔥 Detector de IV • 📊 Dashboard • 📈 Estatísticas • 📜 Histórico
+
+<br>
+
+<img src="./img/banner.png" width="220">
+
+<br><br>
+
+**⭐ Se este projeto ajudou você, deixe uma estrela no GitHub! ⭐**
+
+<br>
+
+Desenvolvido com ❤️ por **Bruno Ferreira**
 
 </div>

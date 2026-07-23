@@ -1,222 +1,172 @@
-// ---- Variáveis de controle ----
-let autoClickInterval = null;
-let observer = null;
+// ---- Variáveis ----
+let autoClickInterval = null, observer = null;
 const textosNotificados = new Set();
-let ignoreUntil = 0;
-let velocidadeClick = 1000; // valor padrão
+let ignoreUntil = 0, velocidadeClick = 1000;
+let alertaIVEnabled = false, ivMinimo = 150;
+let ivLendariaEnabled = true, ivEpicaEnabled = true, ivRaraEnabled = true;
 
-// ---- AutoClick com velocidade ajustável ----
+// ---- Config ----
+let config = { autoClick: true, notifyLendaria: true, notifyEpica: true, notifyRara: true, velocidade: 1000 };
+
+// ---- AutoClick ----
 function startAutoClick() {
-  if (autoClickInterval) {
-    clearInterval(autoClickInterval);
-    autoClickInterval = null;
-  }
-  
+  if (autoClickInterval) { clearInterval(autoClickInterval); autoClickInterval = null; }
   autoClickInterval = setInterval(() => {
-    const botoes = document.querySelectorAll('button.cap-throw');
-    for (const btn of botoes) {
-      if (btn.textContent.trim() === 'Lançar') {
-        btn.click();
-        break;
-      }
-    }
+    const b = document.querySelectorAll('button.cap-throw');
+    for (const btn of b) { if (btn.textContent.trim() === 'Lançar') { btn.click(); break; } }
   }, velocidadeClick);
-  
-  console.log('[AutoClick] Iniciado com intervalo de', velocidadeClick, 'ms');
+}
+function stopAutoClick() { if (autoClickInterval) { clearInterval(autoClickInterval); autoClickInterval = null; } }
+
+// ---- Som ----
+function tocarSom(vol = 0.15, rate = 1.0) {
+  try { const a = new Audio(chrome.runtime.getURL('lendario.mp3')); a.volume = vol; a.playbackRate = rate; a.play().catch(()=>{}); } catch (e) {}
 }
 
-function stopAutoClick() {
-  if (autoClickInterval) {
-    clearInterval(autoClickInterval);
-    autoClickInterval = null;
-    console.log('[AutoClick] Parado.');
+// ---- Salvar Captura ----
+function salvarCaptura(dados) {
+  if (dados.raridade === 'Lendária' || dados.raridade === 'Épica' || dados.raridade === 'Rara') {
+    chrome.storage.local.get(['historico','ultimaCaptura'], (data) => {
+      const h = data.historico || [];
+      const nova = { nome: dados.nome, raridade: dados.raridade, iv: dados.iv, bola: dados.bola, level: dados.level,
+        horario: new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}), data: new Date().toLocaleDateString('pt-BR') };
+      h.unshift(nova);
+      chrome.storage.local.set({ historico: h.slice(0,50), ultimaCaptura: nova });
+      verificarIVAlto(dados);
+    });
   }
 }
 
-// ---- Som (único para todas) ----
-function tocarSom() {
-  try {
-    const audio = new Audio(chrome.runtime.getURL('lendario.mp3'));
-    audio.volume = 0.15;
-    audio.play().catch(err => console.warn('Erro ao tocar áudio:', err));
-  } catch (e) {
-    console.warn('Falha ao reproduzir som:', e);
-  }
+// ---- Extrair Dados ----
+function extrairDadosCaptura(row) {
+  const n = row.querySelector('span.clog-name'), l = row.querySelector('span.clog-lvl'),
+        m = row.querySelector('span.clog-meta'), b = row.querySelector('span.clog-ball');
+  if (!n || !m) return null;
+  const nome = n.textContent.trim(), level = l ? l.textContent.trim().replace('Lv.','') : '?',
+        bola = b ? b.textContent.trim() : 'Desconhecida', bold = m.querySelector('b'),
+        raridade = bold ? bold.textContent.trim() : 'Comum',
+        ivM = m.textContent.trim().match(/IV\s+(\d+)\/(\d+)/), iv = ivM ? `${ivM[1]}/${ivM[2]}` : '?/?';
+  return { nome, raridade, iv, bola, level };
 }
 
-// ---- Configurações atuais ----
-let config = {
-  autoClick: true,
-  notifyLendaria: true,
-  notifyEpica: true,
-  notifyRara: true,
-  velocidade: 1000
-};
-
-// ---- Atualiza contadores no storage ----
-function incrementarContador(raridade) {
-  chrome.storage.local.get(['contadores'], (data) => {
-    const contadores = data.contadores || {
-      lendaria: 0,
-      epica: 0,
-      rara: 0,
-      total: 0
-    };
-    
-    if (raridade === 'Lendária') contadores.lendaria++;
-    else if (raridade === 'Épica') contadores.epica++;
-    else if (raridade === 'Rara') contadores.rara++;
-    
-    contadores.total++;
-    
-    chrome.storage.local.set({ contadores });
+// ---- Contadores ----
+function incrementarContador(r) {
+  chrome.storage.local.get(['contadores'], (d) => {
+    const c = d.contadores || { lendaria:0, epica:0, rara:0, total:0 };
+    if (r==='Lendária') c.lendaria++; else if (r==='Épica') c.epica++; else if (r==='Rara') c.rara++;
+    c.total++; chrome.storage.local.set({ contadores: c });
   });
 }
 
-// ---- Processa span.clog-meta ----
+// ---- Alerta IV Alto ----
+function verificarIVAlto(dados) {
+  if (!alertaIVEnabled) return;
+  if (dados.raridade === 'Lendária' && !ivLendariaEnabled) return;
+  if (dados.raridade === 'Épica' && !ivEpicaEnabled) return;
+  if (dados.raridade === 'Rara' && !ivRaraEnabled) return;
+  const m = dados.iv.match(/(\d+)\/(\d+)/); if (!m) return;
+  if (parseInt(m[1]) >= ivMinimo) {
+    const chaveUnica = `${dados.nome}|${dados.iv}|${dados.raridade}`;
+    chrome.storage.local.get(['ivsNotificados'], (storage) => {
+      const ivsNotificados = storage.ivsNotificados || [];
+      if (ivsNotificados.includes(chaveUnica)) return;
+      ivsNotificados.push(chaveUnica);
+      chrome.storage.local.set({ ivsNotificados: ivsNotificados.slice(-200) }, () => {
+        tocarSom(0.3, 1.5);
+        chrome.runtime.sendMessage({ type:'iv-alto-detectado', nome:dados.nome, iv:dados.iv, raridade:dados.raridade });
+      });
+    });
+  }
+}
+
+// ---- Processar Span ----
 function processarSpan(span) {
-  const b = span.querySelector('b');
-  if (!b) return;
-  
-  const raridade = b.textContent.trim();
-  const textoCompleto = span.textContent.trim();
+  const b = span.querySelector('b'); if (!b) return;
+  const r = b.textContent.trim(), t = span.textContent.trim();
+  if (textosNotificados.has(t)) return;
+  if (Date.now() < ignoreUntil) { textosNotificados.add(t); return; }
+  const ok = (r==='Lendária'&&config.notifyLendaria)||(r==='Épica'&&config.notifyEpica)||(r==='Rara'&&config.notifyRara);
+  if (ok) { textosNotificados.add(t); tocarSom(); incrementarContador(r);
+    let tipo=''; if(r==='Lendária')tipo='legendary-caught'; else if(r==='Épica')tipo='epic-caught'; else tipo='rare-caught';
+    chrome.runtime.sendMessage({type:tipo}); }
+}
 
-  if (textosNotificados.has(textoCompleto)) return;
-  
-  if (Date.now() < ignoreUntil) {
-    textosNotificados.add(textoCompleto);
-    return;
-  }
-
-  const deveNotificar =
-    (raridade === 'Lendária' && config.notifyLendaria) ||
-    (raridade === 'Épica'    && config.notifyEpica)   ||
-    (raridade === 'Rara'     && config.notifyRara);
-
-  if (deveNotificar) {
-    textosNotificados.add(textoCompleto);
-    
-    // Toca o som
-    tocarSom();
-    
-    // Incrementa contador
-    incrementarContador(raridade);
-    
-    // Envia notificação
-    let tipoMsg = '';
-    if (raridade === 'Lendária') tipoMsg = 'legendary-caught';
-    else if (raridade === 'Épica') tipoMsg = 'epic-caught';
-    else if (raridade === 'Rara') tipoMsg = 'rare-caught';
-    
-    chrome.runtime.sendMessage({ type: tipoMsg });
-    console.log(`[Notificação] Pokémon ${raridade.toLowerCase()} detectado!`);
-  }
+// ---- Processar Row ----
+function processarClogRow(row) {
+  const meta = row.querySelector('span.clog-meta');
+  if (meta) { const b = meta.querySelector('b'); if (b) { const r = b.textContent.trim(); if (['Lendária','Épica','Rara'].includes(r)) { const d = extrairDadosCaptura(row); if (d) salvarCaptura(d); processarSpan(meta); } } }
 }
 
 // ---- Observer ----
 function gerenciarObserver() {
-  const precisaObservar = config.notifyLendaria || config.notifyEpica || config.notifyRara;
-  
-  if (precisaObservar && !observer) {
-    observer = new MutationObserver((mutations) => {
-      for (const mutation of mutations) {
-        for (const node of mutation.addedNodes) {
-          if (node.nodeType === Node.ELEMENT_NODE) {
-            if (node.matches && node.matches('div.clog-row')) {
-              const meta = node.querySelector('span.clog-meta');
-              if (meta) processarSpan(meta);
-            }
-            if (node.matches && node.matches('span.clog-meta')) {
-              processarSpan(node);
-            }
-            if (node.querySelectorAll) {
-              node.querySelectorAll('div.clog-row').forEach(row => {
-                const meta = row.querySelector('span.clog-meta');
-                if (meta) processarSpan(meta);
-              });
-              node.querySelectorAll('span.clog-meta').forEach(span => processarSpan(span));
-            }
-          }
-        }
-      }
-    });
-    observer.observe(document.body, { childList: true, subtree: true });
-    console.log('[Observer] Ativo.');
-  } else if (!precisaObservar && observer) {
-    observer.disconnect();
-    observer = null;
-    console.log('[Observer] Parado.');
-  }
+  const p = config.notifyLendaria || config.notifyEpica || config.notifyRara;
+  if (p && !observer) {
+    observer = new MutationObserver((muts) => { for (const m of muts) for (const n of m.addedNodes) if (n.nodeType===Node.ELEMENT_NODE) {
+      if (n.matches&&n.matches('div.clog-row')) processarClogRow(n);
+      if (n.matches&&n.matches('span.clog-meta')) processarSpan(n);
+      if (n.querySelectorAll) { n.querySelectorAll('div.clog-row').forEach(r=>processarClogRow(r)); n.querySelectorAll('span.clog-meta').forEach(s=>processarSpan(s)); }
+    }});
+    observer.observe(document.body, { childList:true, subtree:true });
+  } else if (!p && observer) { observer.disconnect(); observer = null; }
 }
 
-// ---- Força abertura do log ----
+// ---- Log Automático (360x220, fecha Hunt Analyzer, acima do chat) ----
 function abrirLogAutomaticamente() {
   const btnDock = document.querySelector('button.dock-btn[data-guide="dock-analyzer"]');
-  if (!btnDock) {
-    setTimeout(abrirLogAutomaticamente, 2000);
-    return;
-  }
-  
+  if (!btnDock) { setTimeout(abrirLogAutomaticamente, 2000); return; }
   btnDock.click();
-  
   setTimeout(() => {
     const btnLog = document.querySelector('button.ha-clog-btn');
     if (btnLog) {
       btnLog.click();
-      console.log('[Setup] Log de capturas aberto automaticamente.');
+      setTimeout(() => {
+        const clogWindow = document.querySelector('.clog-window');
+        if (clogWindow) {
+          clogWindow.style.setProperty('width', '360px', 'important');
+          clogWindow.style.setProperty('height', '220px', 'important');
+          clogWindow.style.setProperty('z-index', '9999', 'important');
+          clogWindow.style.setProperty('position', 'fixed', 'important');
+          clogWindow.style.setProperty('left', '14px', 'important');
+          clogWindow.style.setProperty('bottom', '248px', 'important');
+          clogWindow.style.removeProperty('top');
+          clogWindow.style.removeProperty('right');
+          clogWindow.style.removeProperty('inset');
+          const clogList = clogWindow.querySelector('.clog-list');
+          if (clogList) { clogList.style.setProperty('max-height', '120px', 'important'); clogList.style.setProperty('overflow-y', 'auto', 'important'); }
+          const clogTitle = clogWindow.querySelector('.clog-title');
+          if (clogTitle) { clogTitle.style.setProperty('font-size', '12px', 'important'); clogTitle.style.setProperty('padding', '4px 8px', 'important'); }
+          const clogHead = clogWindow.querySelector('.clog-head');
+          if (clogHead) { clogHead.style.setProperty('font-size', '10px', 'important'); clogHead.style.setProperty('padding', '4px 8px', 'important'); }
+          const clogFoot = clogWindow.querySelector('.clog-foot');
+          if (clogFoot) { clogFoot.style.setProperty('font-size', '10px', 'important'); clogFoot.style.setProperty('padding', '4px 8px', 'important'); }
+        }
+        const btnFecharHA = document.querySelector('.ha-x');
+        if (btnFecharHA) btnFecharHA.click();
+      }, 1000);
     }
   }, 2000);
 }
+document.addEventListener('click',(e)=>{ if(e.target.closest('button.ha-clog-btn')) ignoreUntil=Date.now()+2000; });
 
-// ---- Detecta clique manual no log ----
-document.addEventListener('click', (e) => {
-  const btn = e.target.closest('button.ha-clog-btn');
-  if (btn) {
-    ignoreUntil = Date.now() + 2000;
-  }
-});
-
-// ---- Aplica configuração ----
+// ---- Aplicar Config ----
 function aplicarConfiguracao(data) {
   config.autoClick = data.autoClickEnabled !== false;
   config.notifyLendaria = data.notifyLendariaEnabled !== false;
   config.notifyEpica = data.notifyEpicaEnabled !== false;
   config.notifyRara = data.notifyRaraEnabled !== false;
   config.velocidade = data.clickSpeed || 1000;
-
-  if (config.autoClick) {
-    velocidadeClick = config.velocidade;
-    startAutoClick();
-  } else {
-    stopAutoClick();
-  }
-
+  alertaIVEnabled = data.alertaIVEnabled === true;
+  ivMinimo = data.ivMinimo || 150;
+  ivLendariaEnabled = data.ivLendariaEnabled !== false;
+  ivEpicaEnabled = data.ivEpicaEnabled !== false;
+  ivRaraEnabled = data.ivRaraEnabled !== false;
+  if (config.autoClick) { velocidadeClick=config.velocidade; startAutoClick(); } else stopAutoClick();
   gerenciarObserver();
 }
 
-// ---- Ouvir mudanças no storage ----
-chrome.storage.onChanged.addListener((changes, area) => {
-  if (area === 'local') {
-    chrome.storage.local.get(
-      ['autoClickEnabled', 'notifyLendariaEnabled', 'notifyEpicaEnabled', 'notifyRaraEnabled', 'clickSpeed'],
-      (data) => aplicarConfiguracao(data)
-    );
-  }
-});
+// ---- Storage ----
+chrome.storage.onChanged.addListener((changes,area)=>{ if(area==='local') chrome.storage.local.get(['autoClickEnabled','notifyLendariaEnabled','notifyEpicaEnabled','notifyRaraEnabled','clickSpeed','alertaIVEnabled','ivMinimo','ivLendariaEnabled','ivEpicaEnabled','ivRaraEnabled'], (d)=>aplicarConfiguracao(d)); });
 
-// ---- Inicialização ----
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => {
-    chrome.storage.local.get(
-      ['autoClickEnabled', 'notifyLendariaEnabled', 'notifyEpicaEnabled', 'notifyRaraEnabled', 'clickSpeed'],
-      (data) => aplicarConfiguracao(data)
-    );
-    setTimeout(abrirLogAutomaticamente, 2000);
-  });
-} else {
-  chrome.storage.local.get(
-    ['autoClickEnabled', 'notifyLendariaEnabled', 'notifyEpicaEnabled', 'notifyRaraEnabled', 'clickSpeed'],
-    (data) => aplicarConfiguracao(data)
-  );
-  setTimeout(abrirLogAutomaticamente, 2000);
-}
+// ---- Init ----
+if (document.readyState==='loading') { document.addEventListener('DOMContentLoaded',()=>{ chrome.storage.local.get(['autoClickEnabled','notifyLendariaEnabled','notifyEpicaEnabled','notifyRaraEnabled','clickSpeed','alertaIVEnabled','ivMinimo','ivLendariaEnabled','ivEpicaEnabled','ivRaraEnabled'],(d)=>aplicarConfiguracao(d)); setTimeout(abrirLogAutomaticamente,2000); }); }
+else { chrome.storage.local.get(['autoClickEnabled','notifyLendariaEnabled','notifyEpicaEnabled','notifyRaraEnabled','clickSpeed','alertaIVEnabled','ivMinimo','ivLendariaEnabled','ivEpicaEnabled','ivRaraEnabled'],(d)=>aplicarConfiguracao(d)); setTimeout(abrirLogAutomaticamente,2000); }

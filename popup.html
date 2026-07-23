@@ -4,153 +4,106 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PokeHackidle</title>
-
-  <!-- Fonte estilo Pokémon -->
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-  
-  <!-- CSS externo -->
   <link rel="stylesheet" href="popup.css" />
 </head>
-
 <body>
   <div class="pokedex">
-    <!-- HEADER -->
     <div class="header">
       <div class="pokeball-icon"></div>
       <div class="header-info">
         <h2>PokeHackidle</h2>
-        <span>
-          <img src="./img/assets/pokebola.gif" class="ico ico-sm" alt="Raio" />
-          Auto Catcher
-        </span>
+        <span><img src="./img/assets/pokebola.gif" class="ico ico-sm" alt="Raio" /> Auto Catcher</span>
       </div>
     </div>
-
-    <!-- DIVISOR POKÉBOLA -->
     <div class="divider"></div>
-
-    <!-- CONTENT -->
     <div class="content">
+
+      <!-- Última Captura -->
+      <div class="card card-dashboard">
+        <div class="card-header"><img src="/img/assets/pokebola.gif" class="ico ico-circle" alt="Dashboard" /> Última Captura</div>
+        <div class="ultima-captura">
+          <div class="ultima-pokemon">
+            <div class="ultima-imagem-container"><img id="ultimaImagem" class="ultima-imagem" src="" alt="Pokémon" /><div class="ultima-imagem-placeholder" id="ultimaPlaceholder">?</div></div>
+            <div class="ultima-nome" id="ultimaNome">---</div><div class="ultima-level" id="ultimaLevel">Lv.?</div>
+          </div>
+          <div class="ultima-detalhes">
+            <div class="detalhe-linha"><span class="detalhe-label">Raridade:</span><span class="valor-raridade" id="ultimaRaridade">---</span></div>
+            <div class="detalhe-linha"><span class="detalhe-label">IV:</span><span class="valor-iv" id="ultimaIV">---</span></div>
+            <div class="detalhe-linha"><span class="detalhe-label">Bola:</span><span class="valor-bola" id="ultimaBola">---</span></div>
+            <div class="detalhe-linha"><span class="detalhe-label">Hora:</span><span class="valor-hora" id="ultimaHora">---</span></div>
+          </div>
+        </div>
+      </div>
 
       <!-- Auto Click -->
       <div class="card">
-        <div class="card-header">
-          <img src="/img/assets/pokebola.gif" class="ico ico-circle" alt="Alvo" />
-          Auto Click
-        </div>
-
-        <div class="toggle-item">
-          <span class="toggle-name">Ativar bot</span>
-          <label class="switch">
-            <input type="checkbox" id="toggleAutoClick" checked />
-            <span class="switch-slider"></span>
-          </label>
-        </div>
-
+        <div class="card-header"><img src="/img/assets/pokebola.gif" class="ico ico-circle" alt="Alvo" /> Auto Click</div>
+        <div class="toggle-item"><span class="toggle-name">Ativar bot</span><label class="switch"><input type="checkbox" id="toggleAutoClick" checked /><span class="switch-slider"></span></label></div>
         <div class="speed-section">
-          <div class="speed-top">
-            <span class="speed-label">Velocidade de captura</span>
-            <span class="speed-num" id="speedDisplay">1000 ms</span>
-          </div>
+          <div class="speed-top"><span class="speed-label">Velocidade</span><span class="speed-num" id="speedDisplay">1000 ms</span></div>
           <input type="range" id="speedSlider" min="500" max="5000" step="100" value="1000" />
+        </div>
+      </div>
+
+      <!-- Alerta de IV Alto -->
+      <div class="card">
+        <div class="card-header"><img src="/img/assets/pokebola.gif" class="ico ico-circle" alt="IV" /> Alerta de IV Alto</div>
+        <div class="toggle-item"><span class="toggle-name"><img src="/img/assets/pokebola.gif" class="ico ico-rarity" alt="IV" /> Ativar alerta</span><label class="switch"><input type="checkbox" id="toggleAlertaIV" /><span class="switch-slider"></span></label></div>
+        <div id="secAlertaIV" style="display: none;">
+          <div class="speed-section">
+  <div class="speed-top"><span class="speed-label">Alertar para:</span></div>
+  <div class="toggle-item" style="border-top:none;padding:4px 0;">
+    <span class="toggle-name" style="font-size:12px;">
+      <img src="/img/assets/pokebola.gif" class="ico ico-rarity" alt="Lendário" /> Lendário
+    </span>
+    <label class="switch"><input type="checkbox" id="toggleIVLendaria" checked /><span class="switch-slider"></span></label>
+  </div>
+  <div class="toggle-item" style="border-top:none;padding:4px 0;">
+    <span class="toggle-name" style="font-size:12px;">
+      <img src="/img/assets/pokebola.gif" class="ico ico-rarity" alt="Épico" /> Épico
+    </span>
+    <label class="switch"><input type="checkbox" id="toggleIVEpica" checked /><span class="switch-slider"></span></label>
+  </div>
+  <div class="toggle-item" style="border-top:none;padding:4px 0;">
+    <span class="toggle-name" style="font-size:12px;">
+      <img src="/img/assets/pokebola.gif" class="ico ico-rarity" alt="Raro" /> Raro
+    </span>
+    <label class="switch"><input type="checkbox" id="toggleIVRara" checked /><span class="switch-slider"></span></label>
+  </div>
+</div>
         </div>
       </div>
 
       <!-- Notificações -->
       <div class="card">
-        <div class="card-header">
-          <img src="/img/assets/pokebola.gif" class="ico ico-circle" alt="Sino" />
-          Notificações
-        </div>
-
-        <div class="toggle-item">
-          <span class="toggle-name">
-            <img src="/img/assets/pokebola.gif" class="ico ico-rarity" alt="Coroa"  />
-            Lendário
-          </span>
-          <label class="switch">
-            <input type="checkbox" id="toggleNotifyLendaria" checked />
-            <span class="switch-slider"></span>
-          </label>
-        </div>
-
-        <div class="toggle-item">
-          <span class="toggle-name">
-            <img src="/img/assets/pokebola.gif" class="ico ico-rarity" alt="Diamante" />
-            Épico
-          </span>
-          <label class="switch">
-            <input type="checkbox" id="toggleNotifyEpica" checked />
-            <span class="switch-slider"></span>
-          </label>
-        </div>
-
-        <div class="toggle-item">
-          <span class="toggle-name">
-            <img src="/img/assets/pokebola.gif" class="ico ico-rarity" alt="Estrela" />
-            Raro
-          </span>
-          <label class="switch">
-            <input type="checkbox" id="toggleNotifyRara" checked />
-            <span class="switch-slider"></span>
-          </label>
-        </div>
+        <div class="card-header"><img src="/img/assets/pokebola.gif" class="ico ico-circle" alt="Sino" /> Notificações</div>
+        <div class="toggle-item"><span class="toggle-name"><img src="/img/assets/pokebola.gif" class="ico ico-rarity" alt="Coroa" /> Lendário</span><label class="switch"><input type="checkbox" id="toggleNotifyLendaria" checked /><span class="switch-slider"></span></label></div>
+        <div class="toggle-item"><span class="toggle-name"><img src="/img/assets/pokebola.gif" class="ico ico-rarity" alt="Diamante" /> Épico</span><label class="switch"><input type="checkbox" id="toggleNotifyEpica" checked /><span class="switch-slider"></span></label></div>
+        <div class="toggle-item"><span class="toggle-name"><img src="/img/assets/pokebola.gif" class="ico ico-rarity" alt="Estrela" /> Raro</span><label class="switch"><input type="checkbox" id="toggleNotifyRara" checked /><span class="switch-slider"></span></label></div>
       </div>
 
       <!-- Estatísticas -->
       <div class="card">
-        <div class="card-header">
-          <img src="/img/assets/pokebola.gif" class="ico ico-circle" alt="Gráfico" />
-          Capturas
-        </div>
+        <div class="card-header"><img src="/img/assets/pokebola.gif" class="ico ico-circle" alt="Gráfico" /> Capturas</div>
         <div class="stats-row">
-          <div class="stat-box stat-lendario">
-            <img src="/img/assets/lendario.gif" class="ico-stat" alt="Coroa" />
-            <div class="stat-number" id="countLendaria">0</div>
-            <div class="stat-desc">Lendário</div>
-          </div>
-
-          <div class="stat-box stat-epico">
-            <img src="/img/assets/epico.gif" class="ico-stat" alt="Diamante" />
-            <div class="stat-number" id="countEpica">0</div>
-            <div class="stat-desc">Épico</div>
-          </div>
-
-          <div class="stat-box stat-raro">
-            <img src="/img/assets/raro.gif" class="ico-stat" alt="Estrela" />
-            <div class="stat-number" id="countRara">0</div>
-            <div class="stat-desc">Raro</div>
-          </div>
-
-          <div class="stat-box stat-total">
-            <img src="/img/assets/pikachu.gif" class="ico-stat" alt="Pasta" />
-            <div class="stat-number" id="countTotal">0</div>
-            <div class="stat-desc">Total</div>
-          </div>
+          <div class="stat-box stat-lendario"><img src="/img/assets/lendario.gif" class="ico-stat" alt="Coroa" /><div class="stat-number" id="countLendaria">0</div><div class="stat-desc">Lendário</div></div>
+          <div class="stat-box stat-epico"><img src="/img/assets/epico.gif" class="ico-stat" alt="Diamante" /><div class="stat-number" id="countEpica">0</div><div class="stat-desc">Épico</div></div>
+          <div class="stat-box stat-raro"><img src="/img/assets/raro.gif" class="ico-stat" alt="Estrela" /><div class="stat-number" id="countRara">0</div><div class="stat-desc">Raro</div></div>
+          <div class="stat-box stat-total"><img src="/img/assets/pikachu.gif" class="ico-stat" alt="Pasta" /><div class="stat-number" id="countTotal">0</div><div class="stat-desc">Total</div></div>
         </div>
+        <button class="btn-reset" id="resetStats"><img src="/img/assets/treinador.gif" class="ico ico-sm" alt="Lixeira" /> Limpar contadores</button>
+      </div>
 
-        <button class="btn-reset" id="resetStats">
-          <img src="/img/assets/treinador.gif" class="ico ico-sm" alt="Lixeira" />
-          Limpar contadores
-        </button>
+      <!-- Mini Histórico -->
+      <div class="card">
+        <div class="card-header"><img src="/img/assets/pokebola.gif" class="ico ico-circle" alt="Histórico" /> Histórico Recente</div>
+        <div class="historico-container" id="historicoLista"><div class="historico-vazio">Nenhuma captura ainda</div></div>
       </div>
     </div>
 
-    <!-- FOOTER -->
-    <div class="footer">
-      <span class="dot"></span>
-      Monitorando capturas em tempo real
-    </div>
-
-    <div class="status" id="statusMsg" style="text-align: center;">
-          <i class="fas fa-code"></i> Desenvolvido por
-          <a href="https://github.com/bruninho182" target="_blank">
-            <i class="fab fa-github"></i> Bruno Ferreira
-          </a>
-          <span style="display: block; margin-top: 5px; font-size: 0.9em; color: #94a3b8;">
-            © 2026 - Todos os direitos reservados
-          </span>
-        </div>
+    <div class="footer"><span class="dot"></span> Monitorando capturas em tempo real</div>
+    <div class="status-footer"><i class="fas fa-code"></i> Desenvolvido por <a href="https://github.com/bruninho182" target="_blank"><i class="fab fa-github"></i> Bruno Ferreira</a><span class="copyright">© 2026 - Todos os direitos reservados</span></div>
   </div>
   <script src="popup.js"></script>
 </body>
