@@ -36,10 +36,7 @@ Automatize capturas, receba notificações inteligentes, monitore Pokémon raros
 
 <p align="center">
 <img src="./img/demo.gif" width="50%">
-</p>
-
-<p align="center">
-<img src="./img/popup.gif" width="50%">
+<img src="./img/popup.gif" width="50%">   
 </p>
 
 ---
