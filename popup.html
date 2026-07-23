@@ -41,7 +41,13 @@
         <div class="card-header"><img src="/img/assets/pokebola.gif" class="ico ico-circle" alt="Alvo" /> Auto Click</div>
         <div class="toggle-item"><span class="toggle-name">Ativar bot</span><label class="switch"><input type="checkbox" id="toggleAutoClick" checked /><span class="switch-slider"></span></label></div>
         <div class="speed-section">
-          <div class="speed-top"><span class="speed-label">Velocidade</span><span class="speed-num" id="speedDisplay">1000 ms</span></div>
+          <div class="speed-top">
+            <span class="speed-label">Velocidade</span>
+            <div class="speed-input-group">
+              <input type="number" id="speedInput" class="speed-input" min="500" max="5000" step="100" value="1000" />
+              <span class="speed-unit">ms</span>
+            </div>
+          </div>
           <input type="range" id="speedSlider" min="500" max="5000" step="100" value="1000" />
         </div>
       </div>
@@ -51,27 +57,34 @@
         <div class="card-header"><img src="/img/assets/pokebola.gif" class="ico ico-circle" alt="IV" /> Alerta de IV Alto</div>
         <div class="toggle-item"><span class="toggle-name"><img src="/img/assets/pokebola.gif" class="ico ico-rarity" alt="IV" /> Ativar alerta</span><label class="switch"><input type="checkbox" id="toggleAlertaIV" /><span class="switch-slider"></span></label></div>
         <div id="secAlertaIV" style="display: none;">
+          <!-- IV mínimo slider + input -->
           <div class="speed-section">
-  <div class="speed-top"><span class="speed-label">Alertar para:</span></div>
-  <div class="toggle-item" style="border-top:none;padding:4px 0;">
-    <span class="toggle-name" style="font-size:12px;">
-      <img src="/img/assets/pokebola.gif" class="ico ico-rarity" alt="Lendário" /> Lendário
-    </span>
-    <label class="switch"><input type="checkbox" id="toggleIVLendaria" checked /><span class="switch-slider"></span></label>
-  </div>
-  <div class="toggle-item" style="border-top:none;padding:4px 0;">
-    <span class="toggle-name" style="font-size:12px;">
-      <img src="/img/assets/pokebola.gif" class="ico ico-rarity" alt="Épico" /> Épico
-    </span>
-    <label class="switch"><input type="checkbox" id="toggleIVEpica" checked /><span class="switch-slider"></span></label>
-  </div>
-  <div class="toggle-item" style="border-top:none;padding:4px 0;">
-    <span class="toggle-name" style="font-size:12px;">
-      <img src="/img/assets/pokebola.gif" class="ico ico-rarity" alt="Raro" /> Raro
-    </span>
-    <label class="switch"><input type="checkbox" id="toggleIVRara" checked /><span class="switch-slider"></span></label>
-  </div>
-</div>
+            <div class="speed-top">
+              <span class="speed-label">IV mínimo para alerta</span>
+              <div class="speed-input-group">
+                <input type="number" id="ivMinInput" class="speed-input" min="100" max="192" step="1" value="150" />
+                <span class="speed-unit">/192</span>
+              </div>
+            </div>
+            <input type="range" id="ivMinSlider" min="100" max="192" step="1" value="150" />
+            <div class="speed-labels"><span>100 (baixo)</span><span>192 (perfeito)</span></div>
+          </div>
+          <!-- Raridades -->
+          <div class="speed-section">
+            <div class="speed-top"><span class="speed-label">Alertar para:</span></div>
+            <div class="toggle-item" style="border-top:none;padding:4px 0;">
+              <span class="toggle-name" style="font-size:12px;"><img src="/img/assets/pokebola.gif" class="ico ico-rarity" alt="Lendário" /> Lendário</span>
+              <label class="switch"><input type="checkbox" id="toggleIVLendaria" checked /><span class="switch-slider"></span></label>
+            </div>
+            <div class="toggle-item" style="border-top:none;padding:4px 0;">
+              <span class="toggle-name" style="font-size:12px;"><img src="/img/assets/pokebola.gif" class="ico ico-rarity" alt="Épico" /> Épico</span>
+              <label class="switch"><input type="checkbox" id="toggleIVEpica" checked /><span class="switch-slider"></span></label>
+            </div>
+            <div class="toggle-item" style="border-top:none;padding:4px 0;">
+              <span class="toggle-name" style="font-size:12px;"><img src="/img/assets/pokebola.gif" class="ico ico-rarity" alt="Raro" /> Raro</span>
+              <label class="switch"><input type="checkbox" id="toggleIVRara" checked /><span class="switch-slider"></span></label>
+            </div>
+          </div>
         </div>
       </div>
 

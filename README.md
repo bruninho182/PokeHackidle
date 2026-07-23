@@ -35,8 +35,7 @@ Automatize capturas, receba notificações inteligentes, monitore Pokémon raros
 # 📸 Demonstração
 
 <p align="center">
-<img src="./img/demo.gif" width="80%">
-<img src="./img/popup.gif" width="50%">   
+<img src="./img/demo.gif" width="100%">
 </p>
 
 ---
@@ -579,6 +578,47 @@ Nenhuma informação da sua conta é enviada para servidores externos.
 >
 > O projeto é totalmente client-side. Todos os dados são processados e armazenados localmente utilizando a Chrome Storage API, garantindo rapidez e privacidade.
 
+# 📸 Galeria
+
+Confira algumas imagens da extensão em funcionamento.
+
+> [!NOTE]
+> Substitua as imagens abaixo pelos screenshots reais do seu projeto.
+
+---
+
+## 🏠 Dashboard
+
+<p align="center">
+<img src="./img/screenshots/dashboard.png" width="90%">
+</p>
+
+---
+
+## 🔔 Sistema de Notificações
+
+<p align="center">
+<img src="./img/screenshots/notificacoes.png" width="90%">
+</p>
+
+---
+
+## 📊 Estatísticas
+
+<p align="center">
+<img src="./img/screenshots/estatisticas.png" width="90%">
+</p>
+
+---
+
+## 📜 Histórico
+
+<p align="center">
+<img src="./img/screenshots/historico.png" width="90%">
+</p>
+
+---
+
 # 🚀 Changelog
 
 ## 🎉 Versão 2.0
@@ -846,7 +886,16 @@ Agradecimentos especiais a:
 - PokéAPI
 - JavaScript Community
 - Todos os usuários que testaram a extensão
-- Deus e minha esposa ❤️
+
+---
+
+# 📄 Licença
+
+Este projeto está licenciado sob a licença **MIT**.
+
+Você pode utilizá-lo, estudar, modificar e distribuir livremente, respeitando os termos da licença.
+
+Consulte o arquivo **LICENSE** para mais informações.
 
 ---
 
