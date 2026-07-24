@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="./icon.png" width="650">
+<img src="./icon.png" width="100">
 
 # 🎮 PokeHackIdle
 
