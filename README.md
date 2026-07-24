@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="./icon.png" width="100">
+<img src="./img/banner.png" width="220">
 
 # 🎮 PokeHackIdle
 
@@ -27,7 +27,8 @@ Automate repetitive tasks, receive smart notifications, monitor rare Pokémon, t
 # 📸 Preview
 
 <p align="center">
-<img src="./img/demo.gif" width="100%">
+<img src="./img/demo.gif" width="50%">
+  <img src="./img/popup.gif" width="50%">
 </p>
 
 ---
@@ -92,24 +93,6 @@ Inspired by the classic Pokémon Pokédex.
 - ✨ Pokémon animations
 - 📱 Responsive popup
 - 🪟 Separate dashboard window
-
----
-
-# 📷 Screenshots
-
-<p align="center">
-
-<img src="./img/screenshots/dashboard.png" width="48%">
-<img src="./img/screenshots/notificacoes.png" width="48%">
-
-</p>
-
-<p align="center">
-
-<img src="./img/screenshots/estatisticas.png" width="48%">
-<img src="./img/screenshots/historico.png" width="48%">
-
-</p>
 
 ---
 
@@ -267,6 +250,6 @@ Use at your own risk.
 
 <img src="./img/banner.png" width="220">
 
-### Made with ❤️ by Bruno Ferreira
+### Made by Bruno Ferreira
 
 </div>
