@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PokeHackidle Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: linear-gradient(180deg, #ef4444 0%, #dc2626 100%);
+      color: #1f2937;
+      padding: 16px;
+      min-width: 480px;
+      position: relative;
+    }
+    body::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: radial-gradient(circle at 20px 20px, rgba(255,255,255,.08) 2px, transparent 2px);
+      background-size: 28px 28px;
+      pointer-events: none;
+    }
+    .pokedex {
+      position: relative;
+      margin: 0 auto;
+      border-radius: 26px;
+      background: linear-gradient(180deg, #f87171 0%, #ef4444 38%, #ffffff 38%, #ffffff 100%);
+      border: 5px solid #111827;
+      box-shadow: 0 18px 40px rgba(0,0,0,.35), inset 0 2px 0 rgba(255,255,255,.45);
+      overflow: hidden;
+      max-width: 600px;
+    }
+    .divider {
+      position: relative; height: 10px; background: #111827;
+    }
+    .divider::before {
+      content: '';
+      position: absolute; left: 50%; top: 50%; width: 34px; height: 34px;
+      transform: translate(-50%, -50%); background: #ffffff; border: 6px solid #111827;
+      border-radius: 50%; box-shadow: inset 0 0 0 6px #d1d5db;
+    }
+    .header {
+      padding: 14px 16px 18px; display: flex; align-items: center; gap: 12px;
+    }
+    .pokeball-icon {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: linear-gradient(to bottom, #ff4b5c 0 50%, #ffffff 50% 100%);
+      border: 5px solid #111827; position: relative; box-shadow: 0 0 0 4px rgba(255,255,255,.18);
+    }
+    .pokeball-icon::before {
+      content: ''; position: absolute; left: 50%; top: 50%; width: 20px; height: 20px;
+      transform: translate(-50%, -50%); background: #ffffff; border: 4px solid #111827;
+      border-radius: 50%; z-index: 2;
+    }
+    .pokeball-icon::after {
+      content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 5px;
+      transform: translateY(-50%); background: #111827;
+    }
+    .header-info h2 {
+      font-family: 'Press Start 2P', cursive; font-size: 16px; color: #facc15;
+      text-shadow: 2px 2px 0 #1e3a8a; margin-bottom: 6px; line-height: 1.25;
+    }
+    .header-info span {
+      display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 800;
+      color: #ffffff; background: rgba(17,24,39,.22); padding: 4px 10px;
+      border-radius: 999px; border: 1px solid rgba(255,255,255,.18);
+    }
+    .content { padding: 16px; background: #ffffff; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .card {
+      background: linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%); border: 3px solid #111827;
+      border-radius: 18px; padding: 14px; box-shadow: inset 0 1px 0 rgba(255,255,255,.8), 0 6px 0 #dbe4ff;
+    }
+    .card-full { grid-column: 1 / -1; }
+    .card-header {
+      display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
+      font-weight: 800; font-size: 12px; text-transform: uppercase; color: #1e3a8a; letter-spacing: .6px;
+    }
+    .ico { display: inline-block; vertical-align: middle; flex-shrink: 0; }
+    .ico-sm { width: 14px; height: 14px; }
+    .ico-circle {
+      width: 28px; height: 28px; padding: 4px; border-radius: 50%;
+      background: #1e3a8a; box-shadow: 0 2px 0 #172554; object-fit: contain;
+    }
+    .ico-rarity { width: 22px; height: 22px; object-fit: contain; }
+    .ico-stat { width: 28px; height: 28px; margin: 0 auto 4px; display: block; object-fit: contain; }
+    .toggle-item { display: flex; align-items: center; justify-content: space-between; padding: 9px 0; }
+    .toggle-item + .toggle-item { border-top: 1px dashed #c7d2fe; }
+    .toggle-name { font-weight: 700; font-size: 14px; display: flex; align-items: center; gap: 8px; color: #111827; }
+    .switch { position: relative; width: 48px; height: 26px; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .switch-slider {
+      position: absolute; inset: 0; border-radius: 999px; background: #cbd5e1;
+      border: 3px solid #111827; transition: .25s; cursor: pointer;
+    }
+    .switch-slider::before {
+      content: ''; position: absolute; width: 16px; height: 16px; left: 3px; top: 2px;
+      border-radius: 50%; background: #ffffff; border: 2px solid #111827;
+      transition: .25s; box-shadow: 0 2px 0 rgba(0,0,0,.15);
+    }
+    input:checked + .switch-slider { background: #facc15; }
+    input:checked + .switch-slider::before { transform: translateX(20px); }
+    .speed-section { margin-top: 10px; padding-top: 10px; border-top: 1px dashed #c7d2fe; }
+    .speed-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .speed-label { font-size: 12px; font-weight: 700; color: #475569; }
+    .speed-labels { display: flex; justify-content: space-between; font-size: 9px; color: #94a3b8; margin-top: 2px; }
+    input[type="range"] {
+      width: 100%; height: 10px; border-radius: 999px; background: #dbeafe;
+      outline: none; border: 2px solid #111827; -webkit-appearance: none; appearance: none;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%;
+      background: #2563eb; border: 4px solid #ffffff; box-shadow: 0 0 0 3px #111827; cursor: pointer;
+    }
+    .speed-input-group { display: flex; align-items: center; gap: 4px; }
+    .speed-input {
+      width: 70px; padding: 6px 8px; border: 2px solid #111827; border-radius: 6px;
+      font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 700; text-align: center;
+      background: #fff; color: #111827; -moz-appearance: textfield;
+    }
+    .speed-input::-webkit-outer-spin-button, .speed-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    .speed-unit { font-size: 11px; font-weight: 700; color: #6b7280; }
+    .ah-input-ext {
+      width: 100%; padding: 6px 8px; border: 2px solid #d1d5db; border-radius: 8px;
+      font-size: 11px; font-family: 'Nunito', sans-serif; box-sizing: border-box; outline: none;
+      transition: border-color 0.2s; background: #fff; color: #111827;
+    }
+    .ah-input-ext:focus { border-color: #fbbf24; }
+    .stats-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .stat-box {
+      border-radius: 16px; padding: 12px 8px; text-align: center;
+      border: 3px solid #111827; box-shadow: inset 0 1px 0 rgba(255,255,255,.7);
+    }
+    .stat-lendario { background: linear-gradient(180deg, #fef3c7, #fde68a); }
+    .stat-epico { background: linear-gradient(180deg, #ede9fe, #ddd6fe); }
+    .stat-raro { background: linear-gradient(180deg, #dbeafe, #bfdbfe); }
+    .stat-total { background: linear-gradient(180deg, #e5e7eb, #d1d5db); }
+    .stat-number { font-size: 24px; font-weight: 900; color: #111827; line-height: 1; }
+    .stat-desc { margin-top: 4px; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .5px; color: #374151; }
+    .btn {
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      width: 100%; margin-top: 12px; padding: 10px; border: 3px solid #111827;
+      border-radius: 14px; background: linear-gradient(180deg, #ffffff, #e5e7eb);
+      color: #111827; font-weight: 800; font-size: 12px; cursor: pointer;
+      transition: transform .08s ease, box-shadow .08s ease; box-shadow: 0 4px 0 #9ca3af;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #9ca3af; }
+    .btn-green { background: #22c55e; color: #fff; }
+    .area-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 4px 6px; font-size: 11px; background: #f3f4f6; border-radius: 6px; margin-bottom: 4px;
+    }
+    .area-item span { font-weight: 600; color: #111827; }
+    .area-item button { background: none; border: none; color: #e74c3c; cursor: pointer; font-size: 14px; }
+    .historico-container { max-height: 160px; overflow-y: auto; }
+    .historico-container::-webkit-scrollbar { width: 4px; }
+    .historico-container::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
+    .historico-item {
+      display: flex; align-items: center; gap: 6px; padding: 5px 0;
+      border-bottom: 1px solid #e5e7eb; font-size: 10px;
+    }
+    .historico-item:last-child { border-bottom: none; }
+    .hist-nome { font-weight: 700; color: #111827; min-width: 55px; font-size: 11px; }
+    .hist-raridade { font-weight: 700; font-size: 9px; padding: 1px 5px; border-radius: 8px; background: #f3f4f6; }
+    .hist-iv { color: #6b7280; margin-left: auto; font-size: 10px; }
+    .hist-hora { color: #9ca3af; font-size: 9px; min-width: 35px; text-align: right; }
+    .historico-vazio { text-align: center; color: #9ca3af; font-size: 11px; padding: 12px; font-style: italic; }
+    .footer {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 12px 14px 14px; background: #ffffff; border-top: 2px dashed #cbd5e1;
+      font-size: 12px; font-weight: 700; color: #334155;
+    }
+    .dot {
+      width: 10px; height: 10px; border-radius: 50%; background: #22c55e;
+      box-shadow: 0 0 12px #22c55e; animation: pulse 1.2s infinite;
+    }
+    @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.25); opacity: .7; } }
+  </style>
+</head>
+<body>
+  <div class="pokedex">
+    <div class="header">
+      <div class="pokeball-icon"></div>
+      <div class="header-info">
+        <h2>PokeHackidle</h2>
+        <span><img src="./img/assets/pokebola.gif" class="ico ico-sm" /> Dashboard</span>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="content">
+      <div class="grid">
+        <!-- Auto Click -->
+        <div class="card">
+          <div class="card-header"><img src="/img/assets/pokebola.gif" class="ico ico-circle" /> Auto Click</div>
+          <div class="toggle-item"><span class="toggle-name">Ativar bot</span><label class="switch"><input type="checkbox" id="toggleAutoClick" checked /><span class="switch-slider"></span></label></div>
+          <div class="speed-section">
+            <div class="speed-top">
+              <span class="speed-label">Velocidade</span>
+              <div class="speed-input-group">
+                <input type="number" id="speedInput" class="speed-input" min="500" max="5000" step="100" value="1000" />
+                <span class="speed-unit">ms</span>
+              </div>
+            </div>
+            <input type="range" id="speedSlider" min="500" max="5000" step="100" value="1000" />
+          </div>
+        </div>
+
+        <!-- Alerta IV Alto -->
+        <div class="card">
+          <div class="card-header"><img src="/img/assets/pokebola.gif" class="ico ico-circle" /> Alerta IV Alto</div>
+          <div class="toggle-item"><span class="toggle-name"><img src="/img/assets/pokebola.gif" class="ico ico-rarity" /> Ativar alerta</span><label class="switch"><input type="checkbox" id="toggleAlertaIV" /><span class="switch-slider"></span></label></div>
+          <div id="secAlertaIV" style="display: none;">
+            <div class="speed-section">
+              <div class="speed-top">
+                <span class="speed-label">IV mínimo</span>
+                <div class="speed-input-group">
+                  <input type="number" id="ivMinInput" class="speed-input" min="100" max="192" step="1" value="150" />
+                  <span class="speed-unit">/192</span>
+                </div>
+              </div>
+              <input type="range" id="ivMinSlider" min="100" max="192" step="1" value="150" />
+              <div class="speed-labels"><span>100</span><span>192</span></div>
+            </div>
+            <div class="speed-section">
+              <div class="speed-top"><span class="speed-label">Alertar para:</span></div>
+              <div class="toggle-item" style="border-top:none;padding:4px 0;"><span class="toggle-name" style="font-size:12px;"><img src="/img/assets/pokebola.gif" class="ico ico-rarity" /> Lendário</span><label class="switch"><input type="checkbox" id="toggleIVLendaria" checked /><span class="switch-slider"></span></label></div>
+              <div class="toggle-item" style="border-top:none;padding:4px 0;"><span class="toggle-name" style="font-size:12px;"><img src="/img/assets/pokebola.gif" class="ico ico-rarity" /> Épico</span><label class="switch"><input type="checkbox" id="toggleIVEpica" checked /><span class="switch-slider"></span></label></div>
+              <div class="toggle-item" style="border-top:none;padding:4px 0;"><span class="toggle-name" style="font-size:12px;"><img src="/img/assets/pokebola.gif" class="ico ico-rarity" /> Raro</span><label class="switch"><input type="checkbox" id="toggleIVRara" checked /><span class="switch-slider"></span></label></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notificações -->
+        <div class="card">
+          <div class="card-header"><img src="/img/assets/pokebola.gif" class="ico ico-circle" /> Notificações</div>
+          <div class="toggle-item"><span class="toggle-name"><img src="/img/assets/pokebola.gif" class="ico ico-rarity" /> Lendário</span><label class="switch"><input type="checkbox" id="toggleNotifyLendaria" checked /><span class="switch-slider"></span></label></div>
+          <div class="toggle-item"><span class="toggle-name"><img src="/img/assets/pokebola.gif" class="ico ico-rarity" /> Épico</span><label class="switch"><input type="checkbox" id="toggleNotifyEpica" checked /><span class="switch-slider"></span></label></div>
+          <div class="toggle-item"><span class="toggle-name"><img src="/img/assets/pokebola.gif" class="ico ico-rarity" /> Raro</span><label class="switch"><input type="checkbox" id="toggleNotifyRara" checked /><span class="switch-slider"></span></label></div>
+        </div>
+
+        <!-- Alerta Drop -->
+        <div class="card">
+          <div class="card-header"><img src="/img/assets/pokebola.gif" class="ico ico-circle" /> Alerta Drop</div>
+          <div class="toggle-item"><span class="toggle-name"><img src="/img/assets/pokebola.gif" class="ico ico-rarity" /> Ativar alerta</span><label class="switch"><input type="checkbox" id="toggleAlertaDrop" /><span class="switch-slider"></span></label></div>
+          <div class="speed-section" id="secAlertaDrop" style="display: none;">
+            <input type="text" id="dropItensInput" class="ah-input-ext" placeholder="Ex: Earth Ball, Rare Candy" />
+            <div class="speed-labels">Separe por vírgula</div>
+          </div>
+        </div>
+
+        <!-- Rotação de Farm -->
+        <div class="card card-full">
+          <div class="card-header"><img src="/img/assets/pokebola.gif" class="ico ico-circle" /> Rotação de Farm</div>
+          <div class="toggle-item"><span class="toggle-name">Ativar rotação</span><label class="switch"><input type="checkbox" id="toggleRotacao" /><span class="switch-slider"></span></label></div>
+          <div id="secRotacao" style="display: none;">
+            <div class="speed-section">
+              <div class="speed-top">
+                <span class="speed-label">Tempo em cada área (min)</span>
+                <div class="speed-input-group">
+                  <input type="number" id="tempoAreaInput" class="speed-input" min="1" max="60" value="4" />
+                  <span class="speed-unit">min</span>
+                </div>
+              </div>
+              <div id="listaAreas" style="max-height:120px;overflow-y:auto;margin-bottom:8px;"></div>
+              <button id="btnCapturarArea" class="btn">📍 Capturar área atual</button>
+              <button id="btnIniciarRotacao" class="btn btn-green">✅ Iniciar Rotação</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Estatísticas -->
+        <div class="card card-full">
+          <div class="card-header"><img src="/img/assets/pokebola.gif" class="ico ico-circle" /> Capturas</div>
+          <div class="stats-row">
+            <div class="stat-box stat-lendario"><img src="/img/assets/lendario.gif" class="ico-stat" /><div class="stat-number" id="countLendaria">0</div><div class="stat-desc">Lendário</div></div>
+            <div class="stat-box stat-epico"><img src="/img/assets/epico.gif" class="ico-stat" /><div class="stat-number" id="countEpica">0</div><div class="stat-desc">Épico</div></div>
+            <div class="stat-box stat-raro"><img src="/img/assets/raro.gif" class="ico-stat" /><div class="stat-number" id="countRara">0</div><div class="stat-desc">Raro</div></div>
+            <div class="stat-box stat-total"><img src="/img/assets/pikachu.gif" class="ico-stat" /><div class="stat-number" id="countTotal">0</div><div class="stat-desc">Total</div></div>
+          </div>
+          <button id="resetStats" class="btn">🗑️ Limpar contadores</button>
+        </div>
+
+        <!-- Histórico -->
+        <div class="card card-full">
+          <div class="card-header"><img src="/img/assets/pokebola.gif" class="ico ico-circle" /> Histórico Recente</div>
+          <div class="historico-container" id="historicoLista"><div class="historico-vazio">Nenhuma captura ainda</div></div>
+        </div>
+      </div>
+
+      <div class="footer"><span class="dot"></span> Monitorando capturas em tempo real</div>
+      <div class="status-footer"><i class="fas fa-code"></i> Desenvolvido por <a href="https://github.com/bruninho182" target="_blank"><i class="fab fa-github"></i> Bruno Ferreira</a><span class="copyright">© 2026 - Todos os direitos reservados</span></div>
+  </div>
+    </div>
+  </div>
+  <script src="dashboard.js"></script>
+</body>
+</html>

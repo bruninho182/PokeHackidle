@@ -7,6 +7,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     chrome.notifications.create({ type: 'basic', iconUrl: 'icon.png', title: '✨ Pokémon Raro!', message: 'Você capturou um Pokémon raro!', priority: 2 });
   } else if (message.type === 'iv-alto-detectado') {
     chrome.notifications.create({ type: 'basic', iconUrl: 'icon.png', title: '🔥 IV ALTO DETECTADO!', message: `${message.nome} (${message.raridade}) - IV ${message.iv}`, priority: 2 });
+  } else if (message.type === 'drop-detectado') {
+    chrome.notifications.create({ type: 'basic', iconUrl: 'icon.png', title: '🎁 ITEM DROPADO!', message: `${message.nome} (${message.quantidade})`, priority: 2 });
   }
   
   if (message.type === 'getStats') {

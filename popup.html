@@ -57,7 +57,6 @@
         <div class="card-header"><img src="/img/assets/pokebola.gif" class="ico ico-circle" alt="IV" /> Alerta de IV Alto</div>
         <div class="toggle-item"><span class="toggle-name"><img src="/img/assets/pokebola.gif" class="ico ico-rarity" alt="IV" /> Ativar alerta</span><label class="switch"><input type="checkbox" id="toggleAlertaIV" /><span class="switch-slider"></span></label></div>
         <div id="secAlertaIV" style="display: none;">
-          <!-- IV mínimo slider + input -->
           <div class="speed-section">
             <div class="speed-top">
               <span class="speed-label">IV mínimo para alerta</span>
@@ -69,22 +68,37 @@
             <input type="range" id="ivMinSlider" min="100" max="192" step="1" value="150" />
             <div class="speed-labels"><span>100 (baixo)</span><span>192 (perfeito)</span></div>
           </div>
-          <!-- Raridades -->
           <div class="speed-section">
             <div class="speed-top"><span class="speed-label">Alertar para:</span></div>
-            <div class="toggle-item" style="border-top:none;padding:4px 0;">
-              <span class="toggle-name" style="font-size:12px;"><img src="/img/assets/pokebola.gif" class="ico ico-rarity" alt="Lendário" /> Lendário</span>
-              <label class="switch"><input type="checkbox" id="toggleIVLendaria" checked /><span class="switch-slider"></span></label>
-            </div>
-            <div class="toggle-item" style="border-top:none;padding:4px 0;">
-              <span class="toggle-name" style="font-size:12px;"><img src="/img/assets/pokebola.gif" class="ico ico-rarity" alt="Épico" /> Épico</span>
-              <label class="switch"><input type="checkbox" id="toggleIVEpica" checked /><span class="switch-slider"></span></label>
-            </div>
-            <div class="toggle-item" style="border-top:none;padding:4px 0;">
-              <span class="toggle-name" style="font-size:12px;"><img src="/img/assets/pokebola.gif" class="ico ico-rarity" alt="Raro" /> Raro</span>
-              <label class="switch"><input type="checkbox" id="toggleIVRara" checked /><span class="switch-slider"></span></label>
-            </div>
+            <div class="toggle-item" style="border-top:none;padding:4px 0;"><span class="toggle-name" style="font-size:12px;"><img src="/img/assets/pokebola.gif" class="ico ico-rarity" alt="Lendário" /> Lendário</span><label class="switch"><input type="checkbox" id="toggleIVLendaria" checked /><span class="switch-slider"></span></label></div>
+            <div class="toggle-item" style="border-top:none;padding:4px 0;"><span class="toggle-name" style="font-size:12px;"><img src="/img/assets/pokebola.gif" class="ico ico-rarity" alt="Épico" /> Épico</span><label class="switch"><input type="checkbox" id="toggleIVEpica" checked /><span class="switch-slider"></span></label></div>
+            <div class="toggle-item" style="border-top:none;padding:4px 0;"><span class="toggle-name" style="font-size:12px;"><img src="/img/assets/pokebola.gif" class="ico ico-rarity" alt="Raro" /> Raro</span><label class="switch"><input type="checkbox" id="toggleIVRara" checked /><span class="switch-slider"></span></label></div>
           </div>
+        </div>
+      </div>
+
+      <!-- Alerta de Drop de Itens -->
+      <div class="card">
+        <div class="card-header"><img src="/img/assets/pokebola.gif" class="ico ico-circle" alt="Drop" /> Alerta de Drop</div>
+        <div class="toggle-item"><span class="toggle-name"><img src="/img/assets/pokebola.gif" class="ico ico-rarity" alt="Drop" /> Ativar alerta</span><label class="switch"><input type="checkbox" id="toggleAlertaDrop" /><span class="switch-slider"></span></label></div>
+        <div class="speed-section" id="secAlertaDrop" style="display: none;">
+          <div class="speed-top"><span class="speed-label">Nomes dos itens</span></div>
+          <input type="text" id="dropItensInput" class="ah-input-ext" placeholder="ex: Earth Ball, Rare Candy" />
+          <div class="speed-labels"><span>Separe por vírgula. Ex: Earth Ball, Small Stone</span></div>
+        </div>
+      </div>
+
+      <!-- Rotação de Farm -->
+      <div class="card">
+        <div class="card-header"><img src="/img/assets/pokebola.gif" class="ico ico-circle" alt="Rotação" /> Rotação de Farm</div>
+        <div class="toggle-item"><span class="toggle-name">Ativar rotação</span><label class="switch"><input type="checkbox" id="toggleRotacao" /><span class="switch-slider"></span></label></div>
+        <div class="speed-section" id="secRotacao" style="display: none;">
+          <div class="speed-top"><span class="speed-label">Tempo em cada área (min)</span><div class="speed-input-group"><input type="number" id="tempoAreaInput" class="speed-input" min="1" max="60" value="4" /><span class="speed-unit">min</span></div></div>
+          <div class="speed-top" style="margin-top:8px;"><span class="speed-label">Áreas na rotação</span></div>
+          <div id="listaAreas" style="max-height:120px;overflow-y:auto;margin-bottom:8px;"></div>
+          <button id="btnCapturarArea" class="btn-reset" style="margin-top:4px;padding:6px;font-size:10px;">📍 Capturar área atual</button>
+          <button id="btnIniciarRotacao" class="btn-reset" style="margin-top:4px;padding:6px;font-size:10px;background:#22c55e;color:#fff;">✅ Iniciar Rotação</button>
+          <div style="font-size:9px;color:#94a3b8;margin-top:4px;">Capture as áreas e depois clique em "Iniciar Rotação"</div>
         </div>
       </div>
 
@@ -113,6 +127,15 @@
         <div class="card-header"><img src="/img/assets/pokebola.gif" class="ico ico-circle" alt="Histórico" /> Histórico Recente</div>
         <div class="historico-container" id="historicoLista"><div class="historico-vazio">Nenhuma captura ainda</div></div>
       </div>
+
+      <!-- Botão Abrir Dashboard -->
+      <div style="text-align: center; margin-top: 8px;">
+        <button id="btnAbrirDashboard" class="btn-dashboard">
+          <img src="/img/assets/pokebola.gif" class="ico ico-sm" />
+          <span style="margin-left: 6px;">Abrir Dashboard</span>
+        </button>
+      </div>
+
     </div>
 
     <div class="footer"><span class="dot"></span> Monitorando capturas em tempo real</div>

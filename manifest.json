@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "PokeHackidle",
-  "version": "2.0",
-  "description": "AutoClick, notificações, dashboard e alerta de IV alto para Poke Idle World",
+  "version": "3.0",
+  "description": "AutoClick, notificações, dashboard e alerta de IV alto, etc para Poke Idle World",
   "permissions": ["notifications", "storage"],
   "background": {
     "service_worker": "background.js"
@@ -20,7 +20,7 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["lendario.mp3"],
+      "resources": ["lendario.mp3", "drop.mp3", "dashboard.html"],
       "matches": ["*://poke.idleworld.online/*"]
     }
   ],

@@ -7,13 +7,23 @@ const toggleAlertaIV = document.getElementById('toggleAlertaIV');
 const toggleIVLendaria = document.getElementById('toggleIVLendaria');
 const toggleIVEpica = document.getElementById('toggleIVEpica');
 const toggleIVRara = document.getElementById('toggleIVRara');
+const toggleAlertaDrop = document.getElementById('toggleAlertaDrop');
+const toggleRotacao = document.getElementById('toggleRotacao');
 const speedSlider = document.getElementById('speedSlider');
 const speedInput = document.getElementById('speedInput');
 const speedDisplay = document.getElementById('speedDisplay');
 const ivMinSlider = document.getElementById('ivMinSlider');
 const ivMinInput = document.getElementById('ivMinInput');
 const ivMinDisplay = document.getElementById('ivMinDisplay');
+const dropItensInput = document.getElementById('dropItensInput');
 const secAlertaIV = document.getElementById('secAlertaIV');
+const secAlertaDrop = document.getElementById('secAlertaDrop');
+const secRotacao = document.getElementById('secRotacao');
+const tempoAreaInput = document.getElementById('tempoAreaInput');
+const listaAreas = document.getElementById('listaAreas');
+const btnCapturarArea = document.getElementById('btnCapturarArea');
+const btnIniciarRotacao = document.getElementById('btnIniciarRotacao');
+const btnAbrirDashboard = document.getElementById('btnAbrirDashboard');
 const countLendaria = document.getElementById('countLendaria');
 const countEpica = document.getElementById('countEpica');
 const countRara = document.getElementById('countRara');
@@ -53,8 +63,7 @@ const pokedexNumeros = {
 
 async function buscarImagemPokemon(nome){
   if(!nome||nome==='---')return null;
-  let n=nome.toLowerCase().trim();
-  if(n.startsWith('shiny '))n=n.replace('shiny ','');
+  let n=nome.toLowerCase().trim();if(n.startsWith('shiny '))n=n.replace('shiny ','');
   if(cacheImagens[n]!==undefined)return cacheImagens[n];
   const num=pokedexNumeros[n];
   if(num){try{const r=await fetch(`https://pokeapi.co/api/v2/pokemon/${num}`);if(r.ok){const d=await r.json();const i=d.sprites.other['official-artwork'].front_default||d.sprites.front_default;if(i){cacheImagens[n]=i;return i;}}}catch(e){}}
@@ -77,13 +86,9 @@ function carregarDashboard(){
         if(u.raridade==='Lendária')ultimaRaridade.classList.add('cor-lendario');
         else if(u.raridade==='Épica')ultimaRaridade.classList.add('cor-epico');
         else if(u.raridade==='Rara')ultimaRaridade.classList.add('cor-raro');}
-      if(ultimaIV)ultimaIV.textContent=u.iv||'---';
-      if(ultimaBola)ultimaBola.textContent=u.bola||'---';
-      if(ultimaHora)ultimaHora.textContent=u.horario||'---';
-      if(ultimaLevel)ultimaLevel.textContent='Lv.'+(u.level||'?');
+      if(ultimaIV)ultimaIV.textContent=u.iv||'---';if(ultimaBola)ultimaBola.textContent=u.bola||'---';if(ultimaHora)ultimaHora.textContent=u.horario||'---';if(ultimaLevel)ultimaLevel.textContent='Lv.'+(u.level||'?');
       atualizarImagemPokemon(u.nome);}
-    if(!historicoLista)return;
-    const h=data.historico||[];historicoLista.innerHTML='';
+    if(!historicoLista)return;const h=data.historico||[];historicoLista.innerHTML='';
     if(h.length===0){historicoLista.innerHTML='<div class="historico-vazio">Nenhuma captura ainda</div>';return;}
     h.slice(0,4).forEach(item=>{const d=document.createElement('div');d.className='historico-item';let rc='';
       if(item.raridade==='Lendária')rc='cor-lendario';else if(item.raridade==='Épica')rc='cor-epico';else if(item.raridade==='Rara')rc='cor-raro';
@@ -95,8 +100,30 @@ function carregarEstatisticas(){
   chrome.runtime.sendMessage({type:'getStats'},(c)=>{if(c){if(countLendaria)countLendaria.textContent=c.lendaria||0;if(countEpica)countEpica.textContent=c.epica||0;if(countRara)countRara.textContent=c.rara||0;if(countTotal)countTotal.textContent=c.total||0;}});
 }
 
+function carregarListaAreas(){
+  chrome.storage.local.get(['areasRotacao'],(d)=>{
+    const areas = d.areasRotacao || [];
+    if(listaAreas){
+      listaAreas.innerHTML = areas.map((a,i)=>`<div class="area-item"><span>${a.nome||'Área '+(i+1)}</span><button data-index="${i}" class="remover-area">✕</button></div>`).join('');
+      document.querySelectorAll('.remover-area').forEach(btn=>{
+        btn.addEventListener('click',(e)=>{
+          const idx = parseInt(e.target.dataset.index);
+          areas.splice(idx,1);
+          chrome.storage.local.set({areasRotacao:areas},carregarListaAreas);
+        });
+      });
+    }
+  });
+}
+
+chrome.storage.onChanged.addListener((changes, area) => {
+  if (area === 'local' && changes.areasRotacao) {
+    carregarListaAreas();
+  }
+});
+
 document.addEventListener('DOMContentLoaded',()=>{
-  chrome.storage.local.get(['autoClickEnabled','notifyLendariaEnabled','notifyEpicaEnabled','notifyRaraEnabled','clickSpeed','alertaIVEnabled','ivMinimo','ivLendariaEnabled','ivEpicaEnabled','ivRaraEnabled'],(data)=>{
+  chrome.storage.local.get(['autoClickEnabled','notifyLendariaEnabled','notifyEpicaEnabled','notifyRaraEnabled','clickSpeed','alertaIVEnabled','ivMinimo','ivLendariaEnabled','ivEpicaEnabled','ivRaraEnabled','alertaDropEnabled','dropItens','rotacaoAtiva','tempoArea','areasRotacao'],(data)=>{
     if(toggleAutoClick)toggleAutoClick.checked=data.autoClickEnabled!==false;
     if(toggleNotifyLendaria)toggleNotifyLendaria.checked=data.notifyLendariaEnabled!==false;
     if(toggleNotifyEpica)toggleNotifyEpica.checked=data.notifyEpicaEnabled!==false;
@@ -105,13 +132,18 @@ document.addEventListener('DOMContentLoaded',()=>{
     if(toggleIVLendaria)toggleIVLendaria.checked=data.ivLendariaEnabled!==false;
     if(toggleIVEpica)toggleIVEpica.checked=data.ivEpicaEnabled!==false;
     if(toggleIVRara)toggleIVRara.checked=data.ivRaraEnabled!==false;
+    if(toggleAlertaDrop){toggleAlertaDrop.checked=data.alertaDropEnabled===true;if(secAlertaDrop)secAlertaDrop.style.display=data.alertaDropEnabled?'block':'none';}
+    if(toggleRotacao){toggleRotacao.checked=data.rotacaoAtiva===true;if(secRotacao)secRotacao.style.display=data.rotacaoAtiva?'block':'none';}
     if(ivMinSlider)ivMinSlider.value=data.ivMinimo||150;
     if(ivMinInput)ivMinInput.value=data.ivMinimo||150;
     if(ivMinDisplay)ivMinDisplay.textContent=data.ivMinimo||150;
+    if(dropItensInput)dropItensInput.value=data.dropItens||'';
+    if(tempoAreaInput)tempoAreaInput.value=data.tempoArea||4;
     const s=data.clickSpeed||1000;
     if(speedSlider)speedSlider.value=s;
     if(speedInput)speedInput.value=s;
     if(speedDisplay)speedDisplay.textContent=s+' ms';
+    carregarListaAreas();
   });
   carregarEstatisticas();carregarDashboard();
 });
@@ -119,49 +151,65 @@ document.addEventListener('DOMContentLoaded',()=>{
 // ===== EVENT LISTENERS =====
 if(toggleAutoClick)toggleAutoClick.addEventListener('change',()=>chrome.storage.local.set({autoClickEnabled:toggleAutoClick.checked}));
 
-// Velocidade: slider + input sincronizados
 if(speedSlider&&speedInput){
-  speedSlider.addEventListener('input',()=>{
-    speedInput.value=speedSlider.value;
-    if(speedDisplay)speedDisplay.textContent=speedSlider.value+' ms';
-  });
+  speedSlider.addEventListener('input',()=>{speedInput.value=speedSlider.value;if(speedDisplay)speedDisplay.textContent=speedSlider.value+' ms';});
   speedSlider.addEventListener('change',()=>chrome.storage.local.set({clickSpeed:parseInt(speedSlider.value)}));
-  speedInput.addEventListener('input',()=>{
-    let v=parseInt(speedInput.value);if(isNaN(v))v=1000;if(v<500)v=500;if(v>5000)v=5000;
-    speedSlider.value=v;if(speedDisplay)speedDisplay.textContent=v+' ms';
-  });
-  speedInput.addEventListener('change',()=>{
-    let v=parseInt(speedInput.value);if(isNaN(v))v=1000;if(v<500)v=500;if(v>5000)v=5000;
-    speedInput.value=v;chrome.storage.local.set({clickSpeed:v});
-  });
+  speedInput.addEventListener('input',()=>{let v=parseInt(speedInput.value);if(isNaN(v))v=1000;if(v<500)v=500;if(v>5000)v=5000;speedSlider.value=v;if(speedDisplay)speedDisplay.textContent=v+' ms';});
+  speedInput.addEventListener('change',()=>{let v=parseInt(speedInput.value);if(isNaN(v))v=1000;if(v<500)v=500;if(v>5000)v=5000;speedInput.value=v;chrome.storage.local.set({clickSpeed:v});});
 }
 
 if(toggleNotifyLendaria)toggleNotifyLendaria.addEventListener('change',()=>chrome.storage.local.set({notifyLendariaEnabled:toggleNotifyLendaria.checked}));
 if(toggleNotifyEpica)toggleNotifyEpica.addEventListener('change',()=>chrome.storage.local.set({notifyEpicaEnabled:toggleNotifyEpica.checked}));
 if(toggleNotifyRara)toggleNotifyRara.addEventListener('change',()=>chrome.storage.local.set({notifyRaraEnabled:toggleNotifyRara.checked}));
 
-// Alerta IV
 if(toggleAlertaIV){toggleAlertaIV.addEventListener('change',()=>{chrome.storage.local.set({alertaIVEnabled:toggleAlertaIV.checked});if(secAlertaIV)secAlertaIV.style.display=toggleAlertaIV.checked?'block':'none';});}
 if(toggleIVLendaria)toggleIVLendaria.addEventListener('change',()=>chrome.storage.local.set({ivLendariaEnabled:toggleIVLendaria.checked}));
 if(toggleIVEpica)toggleIVEpica.addEventListener('change',()=>chrome.storage.local.set({ivEpicaEnabled:toggleIVEpica.checked}));
 if(toggleIVRara)toggleIVRara.addEventListener('change',()=>chrome.storage.local.set({ivRaraEnabled:toggleIVRara.checked}));
 
-// IV mínimo: slider + input sincronizados
+if(toggleAlertaDrop){toggleAlertaDrop.addEventListener('change',()=>{chrome.storage.local.set({alertaDropEnabled:toggleAlertaDrop.checked});if(secAlertaDrop)secAlertaDrop.style.display=toggleAlertaDrop.checked?'block':'none';});}
+if(dropItensInput){dropItensInput.addEventListener('input',()=>chrome.storage.local.set({dropItens:dropItensInput.value}));}
+
+if(toggleRotacao){toggleRotacao.addEventListener('change',()=>{chrome.storage.local.set({rotacaoAtiva:toggleRotacao.checked});if(secRotacao)secRotacao.style.display=toggleRotacao.checked?'block':'none';});}
+if(tempoAreaInput){tempoAreaInput.addEventListener('change',()=>chrome.storage.local.set({tempoArea:parseInt(tempoAreaInput.value)||4}));}
+
+if(btnCapturarArea){
+  btnCapturarArea.addEventListener('click', () => {
+    chrome.storage.local.set({ capturarProximaArea: true }, () => {
+      alert('Modo captura ativado! Abra o mapa e clique nas áreas desejadas. Quando terminar, clique em "Iniciar Rotação".');
+    });
+  });
+}
+
+if(btnIniciarRotacao){
+  btnIniciarRotacao.addEventListener('click', () => {
+    chrome.storage.local.set({ capturarProximaArea: false, rotacaoAtiva: true }, () => {
+      if (toggleRotacao) toggleRotacao.checked = true;
+      if (secRotacao) secRotacao.style.display = 'block';
+      alert('Rotação iniciada!');
+    });
+  });
+}
+
+// Abrir Dashboard
+if(btnAbrirDashboard){
+  btnAbrirDashboard.addEventListener('click', () => {
+    chrome.windows.create({
+      url: chrome.runtime.getURL('dashboard.html'),
+      type: 'popup',
+      width: 500,
+      height: 700
+    });
+  });
+}
+
 if(ivMinSlider&&ivMinInput){
-  ivMinSlider.addEventListener('input',()=>{
-    ivMinInput.value=ivMinSlider.value;
-    if(ivMinDisplay)ivMinDisplay.textContent=ivMinSlider.value;
-  });
+  ivMinSlider.addEventListener('input',()=>{ivMinInput.value=ivMinSlider.value;if(ivMinDisplay)ivMinDisplay.textContent=ivMinSlider.value;});
   ivMinSlider.addEventListener('change',()=>chrome.storage.local.set({ivMinimo:parseInt(ivMinSlider.value)}));
-  ivMinInput.addEventListener('input',()=>{
-    let v=parseInt(ivMinInput.value);if(isNaN(v))v=150;if(v<100)v=100;if(v>192)v=192;
-    ivMinSlider.value=v;if(ivMinDisplay)ivMinDisplay.textContent=v;
-  });
-  ivMinInput.addEventListener('change',()=>{
-    let v=parseInt(ivMinInput.value);if(isNaN(v))v=150;if(v<100)v=100;if(v>192)v=192;
-    ivMinInput.value=v;chrome.storage.local.set({ivMinimo:v});
-  });
+  ivMinInput.addEventListener('input',()=>{let v=parseInt(ivMinInput.value);if(isNaN(v))v=150;if(v<100)v=100;if(v>192)v=192;ivMinSlider.value=v;if(ivMinDisplay)ivMinDisplay.textContent=v;});
+  ivMinInput.addEventListener('change',()=>{let v=parseInt(ivMinInput.value);if(isNaN(v))v=150;if(v<100)v=100;if(v>192)v=192;ivMinInput.value=v;chrome.storage.local.set({ivMinimo:v});});
 }
 
 if(resetBtn)resetBtn.addEventListener('click',()=>{chrome.runtime.sendMessage({type:'resetStats'},(r)=>{if(r&&r.success){if(countLendaria)countLendaria.textContent='0';if(countEpica)countEpica.textContent='0';if(countRara)countRara.textContent='0';if(countTotal)countTotal.textContent='0';}});});
 setInterval(carregarDashboard,2000);setInterval(carregarEstatisticas,2000);
+setInterval(carregarListaAreas,5000);
